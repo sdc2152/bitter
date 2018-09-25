@@ -43,5 +43,18 @@ export const loginUser = (username, password) => (
   }
 );
 
-//export const logoutUser = () => (
-//);
+export const logoutUser = () => (
+  (dispatch) => {
+    return fetch("/api/logout/", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken()
+      }
+    })
+      .then(response => response.json())
+      .then(json => dispatch(receiveUser(json)));
+  }
+);
