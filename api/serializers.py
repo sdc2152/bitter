@@ -29,17 +29,14 @@ class LoginSerializer(serializers.Serializer):
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "username", "email", "first_name", "last_name", )
-
-
-class UserSignUpSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
         fields = (
-            "id", "username", "email", "first_name", "last_name", "password",
+            "id", "username", "email", "first_name", "last_name",
+            "password", "is_authenticated",
         )
-        read_only_fields = ("id", "is_active", "is_staff", )
+        read_only_fields = ("id", "is_authenticated", )
         extra_kwargs = {"password": {"write_only": True}}
+
+    # TODO: add a validate method
 
     def create(self, validated_data):
         """

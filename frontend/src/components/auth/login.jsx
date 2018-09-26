@@ -1,10 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
 
-import {loginUser} from "../actions/userActions";
+import {loginUser} from "../../actions/authActions";
 
 class Login extends React.Component {
   constructor(props) {
+    console.log(props);
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

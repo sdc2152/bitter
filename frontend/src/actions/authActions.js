@@ -1,16 +1,39 @@
 import {getCSRFToken} from "../api_utils";
 
 export const RECEIVE_USER = "RECEIVE_USER";
+export const RECEIVE_LOGOUT = "RECEIVE_LOGOUT";
+export const RECEIVE_LOGIN_STATUS = "RECEIVE_LOGIN_STATUS";
 
-export const receiveUser = (user) => (
+export const receiveUser = user => (
   {
     type: RECEIVE_USER,
-    user: user
+    user: user,
   }
 );
 
+export const receiveLogout = () => (
+  {
+    type: RECEIVE_LOGOUT,
+  }
+);
+
+export const receiveLoginStatus = loginStatus => (
+  {
+    type: RECEIVE_LOGIN_STATUS,
+    loginStatus: loginStatus,
+  }
+);
+
+export const getLoginStatus = () => (
+  dispatch => (
+    fetch("api/login_status/")
+    .then(response => response.json())
+    .then(json => dispatch(receiveUser(json)))
+  )
+);
+
 export const signUpUser = (username, password) => (
-  (dispatch) => {
+  dispatch => {
     return fetch("/api/users/", {
       method: "POST",
       credentials: "same-origin",
@@ -27,7 +50,7 @@ export const signUpUser = (username, password) => (
 );
 
 export const loginUser = (username, password) => (
-  (dispatch) => {
+  dispatch => {
     return fetch("/api/login/", {
       method: "POST",
       credentials: "same-origin",
@@ -44,7 +67,7 @@ export const loginUser = (username, password) => (
 );
 
 export const logoutUser = () => (
-  (dispatch) => {
+  dispatch => {
     return fetch("/api/logout/", {
       method: "POST",
       credentials: "same-origin",

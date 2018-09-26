@@ -1,10 +1,6 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
-from .serializers import (
-    UserDetailSerializer,
-    UserSignUpSerializer,
-    LoginSerializer
-)
+from .serializers import UserDetailSerializer, LoginSerializer
 
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -27,6 +23,19 @@ class LoginView(generics.GenericAPIView):
         return Response(response_serializer.data, status=status.HTTP_200_OK)
 
 
+class LoginStatusView(APIView):
+    permission_classes = (AllowAny, )
+
+    def get(self, request, *ags, **kwargs):
+        user = request.user
+        response = {}
+        if (user.is_authenticated):
+            response = UserDetailSerializer(
+                instance=request.user, context={"request": request}
+            ).data
+        return Response(response, status=status.HTTP_200_OK)
+
+
 class LogoutView(APIView):
     permission_classes = (AllowAny, )
 
@@ -41,7 +50,7 @@ class LogoutView(APIView):
 # TODO: change this to just create view after testing
 class UserSignUpView(generics.ListCreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSignUpSerializer
+    serializer_class = UserDetailSerializer
 
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
