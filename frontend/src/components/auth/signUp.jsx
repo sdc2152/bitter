@@ -1,11 +1,13 @@
 import React from "react";
 import {connect} from "react-redux";
+import {Redirect} from "react-router-dom";
 
 import {signUpUser, clearErrors} from "../../actions/authActions";
 import {
   getUsernameErrors,
   getPasswordErrors,
   getNonFieldErrors,
+  isLoggedIn,
 } from "../../reducers/selectors";
 
 import AuthErrors from "./authErrors";
@@ -37,29 +39,35 @@ class SignUp extends React.Component {
 
   render() {
     const {username, password} = this.state;
-    const {usernameErrors, passwordErrors, nonFieldErrors} = this.props;
-    return (
-      <div>
-        <h1>
-          sign up
-        </h1>
-        <form onSubmit={(e) => this.handleSubmit(e, username, password)}>
-          <AuthErrors errors={nonFieldErrors} />
-          <label>
-            Username
-            <input type="text" value={username}
-              onChange={this.handleChange} name="username" />
-            <AuthErrors errors={usernameErrors} />
-          </label>
-          <label>
-            Password
-            <input type="password" value={password}
-              onChange={this.handleChange} name="password" />
-              <AuthErrors errors={passwordErrors} />
-          </label>
-          <input type="submit" value="SignUp" />
-        </form>
-      </div>
+    const {
+      usernameErrors,
+      passwordErrors,
+      nonFieldErrors,
+      isLoggedIn
+    } = this.props;
+    return isLoggedIn ?  <Redirect to="/" /> :
+      (
+        <div>
+          <h1>
+            sign up
+          </h1>
+          <form onSubmit={(e) => this.handleSubmit(e, username, password)}>
+            <AuthErrors errors={nonFieldErrors} />
+            <label>
+              Username
+              <input type="text" value={username}
+                onChange={this.handleChange} name="username" />
+              <AuthErrors errors={usernameErrors} />
+            </label>
+            <label>
+              Password
+              <input type="password" value={password}
+                onChange={this.handleChange} name="password" />
+                <AuthErrors errors={passwordErrors} />
+            </label>
+            <input type="submit" value="Sign Up" />
+          </form>
+        </div>
     );
   }
 }
@@ -76,6 +84,7 @@ const mapStateToProps = state => (
     usernameErrors: getUsernameErrors(state),
     passwordErrors: getPasswordErrors(state),
     nonFieldErrors: getNonFieldErrors(state),
+    isLoggedIn: isLoggedIn(state),
   }
 );
 

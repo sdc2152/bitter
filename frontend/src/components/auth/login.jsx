@@ -1,11 +1,13 @@
 import React from "react";
 import {connect} from "react-redux";
+import {Redirect} from "react-router-dom";
 
 import {loginUser, clearErrors} from "../../actions/authActions";
 import {
   getUsernameErrors,
   getPasswordErrors,
   getNonFieldErrors,
+  isLoggedIn,
 } from "../../reducers/selectors";
 
 import AuthErrors from "./authErrors";
@@ -36,9 +38,9 @@ class Login extends React.Component {
   }
 
   render() {
-    const {usernameErrors, passwordErrors, nonFieldErrors} = this.props;
+    const {usernameErrors, passwordErrors, nonFieldErrors, isLoggedIn} = this.props;
     const {username, password} = this.state;
-    return (
+    return isLoggedIn ?  <Redirect to="/"/> : (
       <div>
         <h1>
           login
@@ -78,6 +80,7 @@ const mapStateToProps = state => (
     usernameErrors: getUsernameErrors(state),
     passwordErrors: getPasswordErrors(state),
     nonFieldErrors: getNonFieldErrors(state),
+    isLoggedIn: isLoggedIn(state),
   }
 );
 

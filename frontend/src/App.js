@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import {connect} from "react-redux";
-import {BrowserRouter as Router, Route, Redirect, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import {getLoginStatus} from "./actions/authActions";
-import {getInitialLogInComplete, isLoggedIn} from "./reducers/selectors";
+import {getInitialLogInComplete} from "./reducers/selectors";
 
 import Login from "./components/auth/login";
 import SignUp from "./components/auth/signUp";
@@ -17,7 +17,7 @@ class App extends Component {
   }
 
   render() {
-    const {initialLoginComplete, isLoggedIn} = this.props;
+    const {initialLoginComplete} = this.props;
     return initialLoginComplete ?
     (
       <Router >
@@ -25,12 +25,8 @@ class App extends Component {
             <Route component={NavBar} />
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/login" render={
-                () => isLoggedIn ? <Redirect to="/" /> : <Login />
-                } />
-              <Route path="/signup" render={
-                () => isLoggedIn ? <Redirect to="/" /> : <SignUp />
-                } />
+              <Route path="/login" component={Login} />
+              <Route path="/signup" component={SignUp} />
               <Route component={NotFound} />
             </Switch>
         </div>
@@ -50,7 +46,6 @@ const mapDispatchToProps = dispatch => (
 const mapStateToProps = state => (
   {
     initialLoginComplete: getInitialLogInComplete(state),
-    isLoggedIn: isLoggedIn(state),
   }
 );
 
