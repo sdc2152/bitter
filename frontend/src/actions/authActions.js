@@ -1,8 +1,9 @@
 import {getCSRFToken} from "../api_utils";
 
 export const RECEIVE_USER = "RECEIVE_USER";
+export const RECEIVE_ERRORS = "RECEIVE_ERRORS";
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const RECEIVE_LOGOUT = "RECEIVE_LOGOUT";
-export const RECEIVE_LOGIN_STATUS = "RECEIVE_LOGIN_STATUS";
 
 export const receiveUser = user => (
   {
@@ -11,16 +12,22 @@ export const receiveUser = user => (
   }
 );
 
-export const receiveLogout = () => (
+export const receiveErrors = errors => (
   {
-    type: RECEIVE_LOGOUT,
+    type: RECEIVE_ERRORS,
+    errors: errors,
   }
 );
 
-export const receiveLoginStatus = loginStatus => (
+export const clearErrors = () => (
   {
-    type: RECEIVE_LOGIN_STATUS,
-    loginStatus: loginStatus,
+    type: CLEAR_ERRORS,
+  }
+);
+
+export const receiveLogout = () => (
+  {
+    type: RECEIVE_LOGOUT,
   }
 );
 
@@ -44,8 +51,12 @@ export const signUpUser = (username, password) => (
         "X-CSRFToken": getCSRFToken()
       }
     })
-      .then(response => response.json())
-      .then(json => dispatch(receiveUser(json)));
+      .then(response => (
+        response.ok ?
+        response.json().then(json => dispatch(receiveUser(json)))
+        :
+        response.json().then(json => dispatch(receiveErrors(json)))
+      ));
   }
 );
 
@@ -61,8 +72,12 @@ export const loginUser = (username, password) => (
         "X-CSRFToken": getCSRFToken()
       }
     })
-      .then(response => response.json())
-      .then(json => dispatch(receiveUser(json)));
+      .then(response => (
+        response.ok ?
+        response.json().then(json => dispatch(receiveUser(json)))
+        :
+        response.json().then(json => dispatch(receiveErrors(json)))
+      ));
   }
 );
 

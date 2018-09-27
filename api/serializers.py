@@ -21,7 +21,9 @@ class LoginSerializer(serializers.Serializer):
             if not user.is_active:
                 raise exceptions.ValidationError("user acount disabled")
         else:
-            raise exceptions.ValidationError("unable to log in")
+            raise exceptions.ValidationError(
+                "username or password are incorrect"
+            )
         attr["user"] = user
         return attr
 

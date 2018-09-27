@@ -1,13 +1,25 @@
 import React from "react";
 import {connect} from "react-redux";
+import {withRouter} from "react-router";
 
 import {isLoggedIn, getCurrentUser} from "../../reducers/selectors";
+import {logoutUser} from "../../actions/authActions";
 
-const AuthStatus = ({isLoggedIn, currentUser}) => (
+import LoggedInStatus from "./loggedInStatus";
+import LoggedOutStatus from "./loggedOutStatus";
+
+const AuthStatus = ({isLoggedIn, currentUser, logoutUser, location, }) => (
   isLoggedIn ?
-  (<div>Logged In</div>)
+  (
+    <LoggedInStatus
+      currentUser={currentUser}
+      logoutUser={logoutUser}
+    />
+  )
   :
-  (<div>Not Logged In</div>)
+  (
+    <LoggedOutStatus location={location} />
+  )
 );
 
 const mapStateToProps = state => (
@@ -17,4 +29,10 @@ const mapStateToProps = state => (
   }
 );
 
-export default connect(mapStateToProps)(AuthStatus);
+const mapDispatchToProps = dispatch => (
+  {
+    logoutUser: () => dispatch(logoutUser()),
+  }
+);
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AuthStatus));

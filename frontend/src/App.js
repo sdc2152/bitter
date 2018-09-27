@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import {connect} from "react-redux";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Redirect, Switch} from "react-router-dom";
 
 import {getLoginStatus} from "./actions/authActions";
-import {getInitialLogInComplete} from "./reducers/selectors";
+import {getInitialLogInComplete, isLoggedIn} from "./reducers/selectors";
 
 import Login from "./components/auth/login";
-import Logout from "./components/auth/logout";
 import SignUp from "./components/auth/signUp";
 import NavBar from "./components/navBar";
 import Home from "./components/home";
@@ -18,21 +17,24 @@ class App extends Component {
   }
 
   render() {
-    const {initialLoginComplete} = this.props;
+    const {initialLoginComplete, isLoggedIn} = this.props;
     return initialLoginComplete ?
     (
-      <div className="App">
-        <NavBar />
-        <Router >
-          <Switch>
-            <Route path="/login" component={Login} />
-            <Route path="/logout" component={Logout} />
-            <Route path="/signup" component={SignUp} />
-            <Route exact path="/" component={Home} />
-            <Route component={NotFound} />
-          </Switch>
-        </Router>
-      </div>
+      <Router >
+        <div className="App">
+            <Route component={NavBar} />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/login" render={
+                () => isLoggedIn ? <Redirect to="/" /> : <Login />
+                } />
+              <Route path="/signup" render={
+                () => isLoggedIn ? <Redirect to="/" /> : <SignUp />
+                } />
+              <Route component={NotFound} />
+            </Switch>
+        </div>
+      </Router>
     )
     :
     null;
@@ -48,6 +50,7 @@ const mapDispatchToProps = dispatch => (
 const mapStateToProps = state => (
   {
     initialLoginComplete: getInitialLogInComplete(state),
+    isLoggedIn: isLoggedIn(state),
   }
 );
 

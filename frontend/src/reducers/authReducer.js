@@ -1,11 +1,14 @@
 import {
   RECEIVE_USER,
+  RECEIVE_ERRORS,
+  CLEAR_ERRORS,
   RECEIVE_LOGOUT,
 } from "../actions/authActions";
 
 const defaultAuthState = {
   initialLoginCheckComplete: false,
   user: {},
+  errors: {},
 };
 
 function auth(state=defaultAuthState, action) {
@@ -15,8 +18,14 @@ function auth(state=defaultAuthState, action) {
       console.log(action.user);
       return Object.assign({}, state, {
         initialLoginCheckComplete: true,
-        user: action.user
+        user: action.user,
+        errors: {},
       });
+    case RECEIVE_ERRORS:
+      console.log(action.errors);
+      return Object.assign({}, state, {errors: action.errors});
+    case CLEAR_ERRORS:
+      return Object.assign({}, state, {errors: {}});
     case RECEIVE_LOGOUT:
       return Object.assign({}, state, {user: {}});
     default:
