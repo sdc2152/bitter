@@ -5,10 +5,11 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {getLoginStatus} from "./actions/authActions";
 import {getInitialLogInComplete} from "./reducers/selectors";
 
-import Login from "./components/auth/login";
-import SignUp from "./components/auth/signUp";
 import NavBar from "./components/navBar";
 import Home from "./components/home";
+import Login from "./components/auth/login";
+import SignUp from "./components/auth/signUp";
+import UserProfile from "./components/user/userProfile";
 import NotFound from "./components/notFound";
 
 class App extends Component {
@@ -27,6 +28,7 @@ class App extends Component {
               <Route exact path="/" component={Home} />
               <Route path="/login" component={Login} />
               <Route path="/signup" component={SignUp} />
+              <Route path="/@:userSlug" component={UserProfile} />
               <Route component={NotFound} />
             </Switch>
         </div>

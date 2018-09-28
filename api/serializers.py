@@ -2,6 +2,8 @@ from rest_framework import serializers, exceptions
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
+from .models import Profile
+
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -28,12 +30,20 @@ class LoginSerializer(serializers.Serializer):
         return attr
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ("description", "slug", "follows",)
+
+
 class UserDetailSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer()
+
     class Meta:
         model = User
         fields = (
             "id", "username", "email", "first_name", "last_name",
-            "password", "is_authenticated",
+            "is_authenticated", "profile",
         )
         read_only_fields = ("id", "is_authenticated", )
         extra_kwargs = {"password": {"write_only": True}}

@@ -1,5 +1,6 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from .serializers import UserDetailSerializer, LoginSerializer
 
 from rest_framework import generics, status
@@ -56,3 +57,9 @@ class UserSignUpView(generics.ListCreateAPIView):
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        user_slug = self.kwargs.get("user_slug")
+        user = get_object_or_404(queryset, profile__slug=user_slug)
+        return user
