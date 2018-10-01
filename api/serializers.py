@@ -2,7 +2,7 @@ from rest_framework import serializers, exceptions
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-from .models import Profile
+from .models import Profile, Post
 
 
 class LoginSerializer(serializers.Serializer):
@@ -63,3 +63,19 @@ class UserDetailSerializer(serializers.ModelSerializer):
         user.set_password(validated_data["password"])
         user.save()
         return user
+
+
+class PostDetailSerializer(serializers.ModelSerializer):
+    # TODO: require login
+    # TODO: require ownership for update destroy
+    class Meta:
+        model = Post
+        fields = ("id", "body", "user", )
+        read_only_fields = ("id", "user", )
+
+    def create(self, validated_data):
+        user = self.context["request"].user
+        if not user.is_authenticated:
+            raise exceptions.ValidationError("must be logged in to post")
+        post = Post.objects.create(user=user, **validated_data)
+        return post

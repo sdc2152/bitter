@@ -15,14 +15,12 @@ function auth(state=defaultAuthState, action) {
   Object.freeze(state);
   switch(action.type) {
     case RECEIVE_USER:
-      console.log(action.user);
       return Object.assign({}, state, {
         initialLoginCheckComplete: true,
         user: action.user,
         errors: {},
       });
     case RECEIVE_ERRORS:
-      console.log(action.errors);
       return Object.assign({}, state, {errors: action.errors});
     case CLEAR_ERRORS:
       return Object.assign({}, state, {errors: {}});

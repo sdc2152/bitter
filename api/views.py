@@ -1,12 +1,18 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from .serializers import UserDetailSerializer, LoginSerializer
 
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+
+from .serializers import (
+    UserDetailSerializer,
+    LoginSerializer,
+    PostDetailSerializer
+)
+from .models import Post
 
 
 class LoginView(generics.GenericAPIView):
@@ -63,3 +69,16 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
         user_slug = self.kwargs.get("user_slug")
         user = get_object_or_404(queryset, profile__slug=user_slug)
         return user
+
+
+class PostListView(generics.ListCreateAPIView):
+    # TODO: see how to do pagination with DRF
+    # TODO: require login
+    queryset = Post.objects.all().order_by("-created")
+    serializer_class = PostDetailSerializer
+
+
+class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
+    # TODO: require login/ownership for update and destroy
+    queryset = Post.objects.all()
+    serializer_class = PostDetailSerializer

@@ -37,9 +37,9 @@ def save_user_profile(sender, instance, **kwargs):
 
 # # TODO: maybe add a user reference ??? if someone has an @ sign
 # # TODO: how to calculate a large number of followers ? cache ??
-# class Post(DateTimeModel):
-    # body = models.CharField(max_length=200)
-    # user = models.ForeignKey(User)
+class Post(DateTimeModel):
+    body = models.CharField(max_length=200)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     # tags = models.ManyToManyKey(Tag)
 
 
