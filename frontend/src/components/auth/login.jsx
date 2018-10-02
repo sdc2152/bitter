@@ -38,7 +38,12 @@ class Login extends React.Component {
   }
 
   render() {
-    const {usernameErrors, passwordErrors, nonFieldErrors, isLoggedIn} = this.props;
+    const {
+      usernameErrors,
+      passwordErrors,
+      nonFieldErrors,
+      isLoggedIn,
+    } = this.props;
     const {username, password} = this.state;
     return isLoggedIn ?  <Redirect to="/"/> : (
       <div>

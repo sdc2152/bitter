@@ -43,6 +43,23 @@ export const receivePostErrors = errors => (
   }
 );
 
+// Post Form ----------------
+export const CHANGE_POST_BODY = "CHANGE_POST_BODY";
+export const CREATE_POST_SUCCESS = "CREATE_POST_SUCCESS";
+
+export const changePostBody = body => (
+  {
+    type: CHANGE_POST_BODY,
+    body: body
+  }
+);
+
+export const createPostSuccess = () => (
+  {
+    type: CREATE_POST_SUCCESS,
+  }
+);
+
 // AJAX ---------------
 export const createPost = body => (
   dispatch => {
@@ -59,13 +76,28 @@ export const createPost = body => (
       .then(response => (
         response.ok ?
         response.json().then(json => dispatch(receivePost(json)))
+        .then(() => dispatch(createPostSuccess()))
         :
         response.json().then(json => dispatch(receivePostErrors(json)))
       ));
   }
 );
 
+//export const fetchPost = postId => (
+  //dispatch => {
+    //dispatch(isFetchingPost());
+    //return fetch("/api/posts/")
+      //.then(response => (
+        //response.ok ?
+        //response.json().then(json => dispatch(receivePosts(json)))
+        //:
+        //response.json().then(json => dispatch(receivePostsErrors(json)))
+      //));
+  //}
+//)
+
 export const fetchPosts = user => (
+  // TODO: have parameters to filter by user
   dispatch => {
     dispatch(isFetchingPosts());
     return fetch("/api/posts/")

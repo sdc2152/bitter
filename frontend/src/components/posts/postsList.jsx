@@ -12,9 +12,7 @@ class PostList extends React.Component {
 
   render() {
     const {posts} = this.props;
-    const postsList = posts.map((e, i) => (
-      <li key={e.id} >{e.body}</li>
-    ));
+    const postsList = posts.map(e => <li key={e.id} >{e.body}</li>);
     return (
       <div>
         Post List

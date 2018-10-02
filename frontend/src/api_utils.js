@@ -4,3 +4,11 @@ export const getCSRFToken = () => {
     return parts.pop().split(";").shift();
   }
 };
+
+
+export const normalizeArray = (array, keyField) => (
+  array.reduce((obj, item) => {
+    obj[item[keyField]] = item;
+    return obj;
+  }, {})
+);

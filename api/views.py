@@ -74,6 +74,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 class PostListView(generics.ListCreateAPIView):
     # TODO: see how to do pagination with DRF
     # TODO: require login
+    # TODO: Filters: user, tag
     queryset = Post.objects.all().order_by("-created")
     serializer_class = PostDetailSerializer
 

@@ -32,7 +32,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 # class Tag(DateTimeModel):
-    # name = models.CharField()
+    # name = models.CharField(max_length=200)
 
 
 # # TODO: maybe add a user reference ??? if someone has an @ sign
