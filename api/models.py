@@ -16,8 +16,12 @@ class DateTimeModel(models.Model):
 class Profile(DateTimeModel):
     slug = models.SlugField(max_length=200)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    follows = models.ManyToManyField("self", related_name="followers")
-    description = models.CharField(max_length=200)
+    follows = models.ManyToManyField(
+        "self",
+        related_name="followers",
+        blank=True
+    )
+    description = models.CharField(max_length=200, default="")
 
 
 @receiver(post_save, sender=User)

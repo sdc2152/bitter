@@ -2,6 +2,8 @@ import {combineReducers} from "redux";
 
 import {normalizeArray} from "../apiUtils";
 
+import {RECEIVE_DISPLAY_USER} from "../actions/userActions";
+
 import {
   RECEIVE_POST,
   RECEIVE_POST_ERRORS,
@@ -79,6 +81,13 @@ const form = (state=defaultPostForm, action) => {
       return state;
   }
 };
+
+const shouldFetch = (state=false, action) => {
+  switch(action.type) {
+    default:
+      return false;
+  }
+}
 
 export default combineReducers({
   byIds,

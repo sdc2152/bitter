@@ -1,13 +1,17 @@
 import React from "react";
 import {connect} from "react-redux";
 
-import {getPosts, getDisplayUser} from "../../reducers/selectors";
-import {fetchPosts} from "../../actions/postsActions";
+import {fetchPostsByLocation} from "../../actions/postsActions";
+import {
+  getPosts,
+  getDisplayUser,
+} from "../../reducers/selectors";
 
 class PostList extends React.Component {
   componentWillMount() {
-    const {displayUser, fetchPosts} = this.props;
-    fetchPosts(displayUser);
+    const {fetchPostsByLocation, location} = this.props;
+
+    fetchPostsByLocation(location);
   }
 
   render() {
@@ -33,7 +37,7 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    fetchPosts: displayUser => dispatch(fetchPosts(displayUser)),
+    fetchPostsByLocation: params => dispatch(fetchPostsByLocation(params)),
   }
 );
 

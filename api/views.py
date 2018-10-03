@@ -59,6 +59,16 @@ class UserSignUpView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        login(request, user)
+        response_serializer = UserDetailSerializer(
+            instance=user, context={"request": request}
+        )
+        return Response(response_serializer.data, status=status.HTTP_200_OK)
+
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
@@ -72,11 +82,18 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PostListView(generics.ListCreateAPIView):
-    # TODO: see how to do pagination with DRF
     # TODO: require login
-    # TODO: Filters: user, tag
-    queryset = Post.objects.all().order_by("-created")
+    # TODO: Filters: tag
     serializer_class = PostDetailSerializer
+
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        params = self.request.query_params
+        slug = params.get("slug", None)
+        if slug is not None:
+            queryset = queryset.filter(user__profile__slug=slug)
+        queryset = queryset.order_by("-created")
+        return queryset
 
 
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):

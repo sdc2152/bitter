@@ -33,22 +33,21 @@ class LoginSerializer(serializers.Serializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ("description", "slug", "follows",)
+        fields = ("description", "slug", "follows", )
+        extra_kwargs = {"slug": {"required": False}, }
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer()
+    profile = ProfileSerializer(required=False)
 
     class Meta:
         model = User
         fields = (
             "id", "username", "email", "first_name", "last_name",
-            "is_authenticated", "profile",
+            "is_authenticated", "password", "profile",
         )
-        read_only_fields = ("id", "is_authenticated", )
-        extra_kwargs = {"password": {"write_only": True}}
-
-    # TODO: add a validate method
+        read_only_fields = ("id", "is_authenticated", "profile", )
+        extra_kwargs = {"password": {"write_only": True}, }
 
     def create(self, validated_data):
         """
@@ -58,7 +57,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
             username=validated_data["username"],
             email=validated_data.get("email", ""),
             first_name=validated_data.get("first_name", ""),
-            last_name=validated_data.get("last_name", "")
+            last_name=validated_data.get("last_name", ""),
         )
         user.set_password(validated_data["password"])
         user.save()

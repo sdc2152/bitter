@@ -1,4 +1,4 @@
-import {getCSRFToken} from "../api_utils";
+import {getCSRFToken} from "../apiUtils";
 
 export const RECEIVE_USER = "RECEIVE_USER";
 export const RECEIVE_ERRORS = "RECEIVE_ERRORS";

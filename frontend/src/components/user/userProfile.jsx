@@ -25,7 +25,8 @@ class UserProfile extends React.Component {
       isDisplayUserFound,
       isFetchingDisplayUser,
       isUserNotFound,
-      displayUser
+      displayUser,
+      location,
     } = this.props;
     const {username, first_name, last_name, email, profile} = displayUser;
     return (
@@ -42,7 +43,7 @@ class UserProfile extends React.Component {
           {last_name}
           {email}
           <PostForm />
-          <PostList />
+          <PostList location={location}/>
         </div>
       )
       :

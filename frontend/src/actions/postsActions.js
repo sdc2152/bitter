@@ -1,4 +1,4 @@
-import {getCSRFToken} from "../api_utils";
+import {getCSRFToken, getParamStringFromLocation} from "../apiUtils";
 
 // Posts -----------------
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
@@ -96,11 +96,10 @@ export const createPost = body => (
   //}
 //)
 
-export const fetchPosts = user => (
-  // TODO: have parameters to filter by user
+export const fetchPostsByLocation = location => (
   dispatch => {
     dispatch(isFetchingPosts());
-    return fetch("/api/posts/")
+    return fetch(`/api/posts/?${getParamStringFromLocation(location)}`)
       .then(response => (
         response.ok ?
         response.json().then(json => dispatch(receivePosts(json)))
