@@ -6,13 +6,16 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+
 
 from .serializers import (
     UserDetailSerializer,
+    SignUpSerializer,
     LoginSerializer,
     PostDetailSerializer
 )
-from .models import Post
+from .models import Post, Profile
 
 
 class LoginView(generics.GenericAPIView):
@@ -54,10 +57,8 @@ class LogoutView(APIView):
         )
 
 
-# TODO: change this to just create view after testing
-class UserSignUpView(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserDetailSerializer
+class SignUpView(generics.CreateAPIView):
+    serializer_class = SignUpSerializer
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -70,15 +71,60 @@ class UserSignUpView(generics.ListCreateAPIView):
         return Response(response_serializer.data, status=status.HTTP_200_OK)
 
 
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
+
+
+@api_view(["POST", "DELETE", ])
+def create_destroy_follow(request):
+    user = request.user
+    profile = user.profile
+    other_profile = Profile.objects.get(user__id=request.data.get("id"))
+    # TODO: maybe need to move to after change so that correct serialization
+    response_serializer = UserDetailSerializer(
+        instance=user, context={"request": request}
+    )
+    if request.method == "POST":
+        profile.follows.add(other_profile)
+        profile.save()
+        return Response(
+            data=response_serializer.data,
+            status=status.HTTP_201_CREATED
+        )
+    elif request.method == "DELETE":
+        profile.follows.remove(other_profile)
+        profile.save()
+        return Response(
+            data=response_serializer.data,
+            status=status.HTTP_200_OK
+        )
+
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
     def get_object(self):
         queryset = self.get_queryset()
-        user_slug = self.kwargs.get("user_slug")
-        user = get_object_or_404(queryset, profile__slug=user_slug)
+        user_slug = self.kwargs.get("user_slug", None)
+        if user_slug is not None:
+            user = get_object_or_404(queryset, profile__slug=user_slug)
+        user_id = self.kwargs.get("pk", None)
+        if user_id is not None:
+            user = get_object_or_404(queryset, id=user_id)
         return user
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.serializer_class(
+            instance, data=request.data, partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class PostListView(generics.ListCreateAPIView):
@@ -89,9 +135,9 @@ class PostListView(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Post.objects.all()
         params = self.request.query_params
-        slug = params.get("slug", None)
-        if slug is not None:
-            queryset = queryset.filter(user__profile__slug=slug)
+        user_id = params.get("user_id", None)
+        if user_id is not None:
+            queryset = queryset.filter(user__id=user_id)
         queryset = queryset.order_by("-created")
         return queryset
 

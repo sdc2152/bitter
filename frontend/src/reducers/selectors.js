@@ -1,13 +1,18 @@
 // Auth selectors
 export const isLoggedIn = ({auth}) => auth.user.is_authenticated || false;
-export const getCurrentUser = ({auth}) => auth.user;
 export const getInitialLogInComplete = ({auth}) => (
   auth.initialLoginCheckComplete
 );
-
 export const getUsernameErrors = ({auth}) => auth.errors.username;
 export const getPasswordErrors = ({auth}) => auth.errors.password;
 export const getNonFieldErrors = ({auth}) => auth.errors.non_field_errors;
+
+// Current User selectors
+export const getCurrentUser = ({auth}) => auth.user;
+export const getCurrentUserId = ({auth}) => auth.user.id;
+export const getCurrentUserFollows = ({auth}) => (
+  auth.user.profile.follows
+);
 
 // User selectors
 export const isDisplayUserFound = ({displayUser}) => (

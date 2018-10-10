@@ -33,7 +33,7 @@ export const receiveLogout = () => (
 
 export const getLoginStatus = () => (
   dispatch => (
-    fetch("api/login_status/")
+    fetch("/api/login_status/")
     .then(response => response.json())
     .then(json => dispatch(receiveUser(json)))
   )
@@ -41,7 +41,7 @@ export const getLoginStatus = () => (
 
 export const signUpUser = (username, password) => (
   dispatch => {
-    return fetch("/api/users/", {
+    return fetch("/api/sign_up/", {
       method: "POST",
       credentials: "same-origin",
       body: JSON.stringify({username: username, password: password}),

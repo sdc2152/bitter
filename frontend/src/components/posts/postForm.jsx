@@ -5,15 +5,14 @@ import {createPost, changePostBody} from "../../actions/postsActions";
 import {getPostFormBody} from "../../reducers/selectors";
 
 const PostForm = ({body, createPost, changePostBody}) => (
-  <form onSubmit={e => {e.preventDefault(); return createPost(body);}}>
-    <label>
-      Post
-      <input type="text" value={body}
-        onChange={e => changePostBody(e.target.value)} name="body"
+  <div className="px-4 py-2 bg-primary-light">
+    <form onSubmit={e => {e.preventDefault(); return createPost(body);}}>
+      <input className="p-1 border-0 rounded" type="text" value={body}
+        placeholder="What's on your mind?" name="body"
+        onChange={e => changePostBody(e.target.value)}
       />
-    </label>
-    <input type="submit" value="Submit" />
-  </form>
+    </form>
+  </div>
 );
 
 const mapDispatchToProps = dispatch => (

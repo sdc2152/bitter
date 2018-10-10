@@ -1,8 +1,41 @@
-from rest_framework import serializers, exceptions
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.utils.text import slugify
+from rest_framework import serializers, exceptions
+from random import random
 
 from .models import Profile, Post
+
+
+class SignUpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("username", "password", )
+        extra_kwargs = {
+            "password": {
+                "style": {"input_type": "password"},
+                "write_only": True
+            }
+        }
+
+    def ensure_unique_slug(self, slug):
+        slug = slugify(slug)
+        while Profile.objects.filter(slug=slug).exists():
+            slug = slugify("{}-{}".format(slug, random()))
+        return slug
+
+    def create(self, validated_data):
+        """
+        create user so password is saved correctly and profile is generated
+        """
+        user = User.objects.create(username=validated_data["username"])
+        user.set_password(validated_data["password"])
+        user.save()
+
+        slug = self.ensure_unique_slug(user.username)
+        Profile.objects.create(user=user, slug=slug)
+
+        return user
 
 
 class LoginSerializer(serializers.Serializer):
@@ -34,7 +67,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ("description", "slug", "follows", )
-        extra_kwargs = {"slug": {"required": False}, }
+        extra_kwargs = {"slug": {"validators": []}, }
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
@@ -44,24 +77,48 @@ class UserDetailSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             "id", "username", "email", "first_name", "last_name",
-            "is_authenticated", "password", "profile",
+            "is_authenticated", "profile",
         )
-        read_only_fields = ("id", "is_authenticated", "profile", )
-        extra_kwargs = {"password": {"write_only": True}, }
+        read_only_fields = ("id", "is_authenticated", )
 
-    def create(self, validated_data):
+    def validate_profile(self, data):
         """
-        create user so proper password is generated.
+        ensure that slug is unique but allow user to repost slug
         """
-        user = User.objects.create(
-            username=validated_data["username"],
-            email=validated_data.get("email", ""),
-            first_name=validated_data.get("first_name", ""),
-            last_name=validated_data.get("last_name", ""),
+        new_slug = data.get("slug")
+        initial_slug = self.instance.profile.slug
+        if new_slug and new_slug != initial_slug:
+            if Profile.objects.filter(slug=new_slug).exists():
+                raise exceptions.ValidationError("@ address must be unique.")
+        return data
+
+
+    # TODO: require that user be logged in to update
+    def update(self, instance, validated_data):
+        """
+        handle updates for nested relationship Profile
+        """
+        # user update
+        instance.username = validated_data.get("username", instance.username)
+        instance.email = validated_data.get("email", instance.email)
+        instance.first_name = validated_data.get(
+            "first_name", instance.first_name
         )
-        user.set_password(validated_data["password"])
-        user.save()
-        return user
+        instance.last_name = validated_data.get(
+            "last_name", instance.last_name
+        )
+        instance.save()
+
+        # profile update
+        pro_data = validated_data.get("profile")
+        profile = instance.profile
+        profile.follows.set(pro_data.get("follows", profile.follows.all()))
+        profile.slug = slugify(pro_data.get("slug", profile.slug))
+        profile.description = pro_data.get(
+            "description", profile.description
+        )
+        profile.save()
+        return instance
 
 
 class PostDetailSerializer(serializers.ModelSerializer):

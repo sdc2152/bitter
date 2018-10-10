@@ -3,6 +3,10 @@ import {connect} from "react-redux";
 
 import {fetchUserFromSlug} from "../../actions/userActions";
 import {
+  fetchPosts,
+  getProfilePageFetchParams
+} from "../../actions/postsActions";
+import {
   isDisplayUserFound,
   isFetchingDisplayUser,
   isUserNotFound,
@@ -11,6 +15,7 @@ import {
 
 import UserNotFound from "./userNotFound";
 import UserLoading from "./userLoading";
+import UserInfo from "./userInfo";
 import PostForm from "../posts/postForm";
 import PostList from "../posts/postsList";
 
@@ -26,24 +31,24 @@ class UserProfile extends React.Component {
       isFetchingDisplayUser,
       isUserNotFound,
       displayUser,
-      location,
+      fetchPosts,
     } = this.props;
-    const {username, first_name, last_name, email, profile} = displayUser;
     return (
       isFetchingDisplayUser ?
       <UserLoading />
       :
       isDisplayUserFound ?
       (
-        <div>
-          {username}
-          @{profile.slug}
-          {profile.description}
-          {first_name}
-          {last_name}
-          {email}
-          <PostForm />
-          <PostList location={location}/>
+        <div className="d-flex p-2 justify-content-start">
+          <div className="mr-2 bg-white">
+            <UserInfo user={displayUser} />
+          </div>
+
+          <div className="ml-2 bg-white center-display rounded-bottom">
+            <PostForm />
+            <PostList fetchPosts={fetchPosts(displayUser)}/>
+          </div>
+
         </div>
       )
       :
@@ -58,6 +63,9 @@ class UserProfile extends React.Component {
 const mapDispatchToProps = dispatch => (
   {
     fetchUserFromSlug: slug => dispatch(fetchUserFromSlug(slug)),
+    fetchPosts: user => () => dispatch(
+      fetchPosts(getProfilePageFetchParams(user))
+    ),
   }
 );
 

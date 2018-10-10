@@ -1,4 +1,4 @@
-import {getCSRFToken, getParamStringFromLocation} from "../apiUtils";
+import {getCSRFToken, getParamString} from "../apiUtils";
 
 // Posts -----------------
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
@@ -26,12 +26,12 @@ export const isFetchingPosts = () => (
 );
 
 // Post -----------------
-export const RECEIVE_POST = "RECEIVE_POST";
+export const ADD_POST = "ADD_POST";
 export const RECEIVE_POST_ERRORS = "RECEIVE_POST_ERRORS";
 
-export const receivePost = post => (
+export const addPost = post => (
   {
-    type: RECEIVE_POST,
+    type: ADD_POST,
     post: post,
   }
 );
@@ -75,7 +75,7 @@ export const createPost = body => (
     })
       .then(response => (
         response.ok ?
-        response.json().then(json => dispatch(receivePost(json)))
+        response.json().then(json => dispatch(addPost(json)))
         .then(() => dispatch(createPostSuccess()))
         :
         response.json().then(json => dispatch(receivePostErrors(json)))
@@ -83,23 +83,27 @@ export const createPost = body => (
   }
 );
 
-//export const fetchPost = postId => (
-  //dispatch => {
-    //dispatch(isFetchingPost());
-    //return fetch("/api/posts/")
-      //.then(response => (
-        //response.ok ?
-        //response.json().then(json => dispatch(receivePosts(json)))
-        //:
-        //response.json().then(json => dispatch(receivePostsErrors(json)))
-      //));
-  //}
-//)
+export const HOME_PAGE = "HOME_PAGE";
+export const PROFILE_PAGE = "PROFILE_PAGE";
 
-export const fetchPostsByLocation = location => (
+export const getProfilePageFetchParams = user => (
+  {
+    user_id: user.id,
+    context: PROFILE_PAGE,
+  }
+);
+
+export const getHomePageFetchParams = user => (
+  {
+    user_id: user.id,
+    context: HOME_PAGE,
+  }
+);
+
+export const fetchPosts = (params={}) => (
   dispatch => {
     dispatch(isFetchingPosts());
-    return fetch(`/api/posts/?${getParamStringFromLocation(location)}`)
+    return fetch(`/api/posts/?${getParamString(params)}`)
       .then(response => (
         response.ok ?
         response.json().then(json => dispatch(receivePosts(json)))

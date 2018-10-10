@@ -1,3 +1,7 @@
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
+import "./styles/main.css";
+
 import React, { Component } from "react";
 import {connect} from "react-redux";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
@@ -20,17 +24,20 @@ class App extends Component {
   render() {
     const {initialLoginComplete} = this.props;
     return initialLoginComplete ?
+    // TODO: not sure if Not Found will ever be called
     (
       <Router >
         <div className="App">
             <Route component={NavBar} />
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={SignUp} />
-              <Route path="/@:userSlug" component={UserProfile} />
-              <Route component={NotFound} />
-            </Switch>
+            <div className="body mx-lg-5 mx-sm-3">
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route path="/login" component={Login} />
+                <Route path="/signup" component={SignUp} />
+                <Route path="/:userSlug" component={UserProfile} />
+                <Route component={NotFound} />
+              </Switch>
+            </div>
         </div>
       </Router>
     )

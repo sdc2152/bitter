@@ -3,7 +3,7 @@ import {combineReducers} from "redux";
 import {normalizeArray} from "../apiUtils";
 
 import {
-  RECEIVE_POST,
+  ADD_POST,
   RECEIVE_POST_ERRORS,
   RECEIVE_POSTS,
   RECEIVE_POSTS_ERRORS,
@@ -15,10 +15,15 @@ import {
 const postIds = (state=[], action) => {
   Object.freeze(state);
   switch(action.type) {
-    case RECEIVE_POST:
+    case ADD_POST:
       return [action.post.id, ...state];
     case RECEIVE_POSTS:
-      return [...state, ...action.posts.map(post => post.id)];
+      // TODO: the problem here is that clicking links without reloading page
+      //       will keep adding posts to the post state. there needs to be a
+      //       add new posts and a fetch original posts or something
+      //       ADD_POSTS and ADD_POST for adding to the state and RECEIVE for
+      //       replacing
+      return action.posts.map(post => post.id);
     default:
       return state;
   }
@@ -27,10 +32,10 @@ const postIds = (state=[], action) => {
 const byIds = (state={}, action) => {
   Object.freeze(state);
   switch(action.type) {
-    case RECEIVE_POST:
+    case ADD_POST:
       return Object.assign({}, state, {[action.post.id]: action.post});
     case RECEIVE_POSTS: {
-      return Object.assign({}, state, normalizeArray(action.posts, "id"));
+      return normalizeArray(action.posts, "id");
     }
     default:
       return state;
@@ -54,7 +59,7 @@ const isFetching = (state=false, action) => {
   switch(action.type) {
     case RECEIVE_POST_ERRORS:
     case RECEIVE_POSTS_ERRORS:
-    case RECEIVE_POST:
+    case ADD_POST:
     case RECEIVE_POSTS:
       return false;
     case IS_FETCHING_POSTS:

@@ -16,18 +16,3 @@ export const normalizeArray = (array, keyField) => (
 export const getParamString = params => (
   Object.keys(params).map(k => `${k}=${params[k]}`).join("&")
 );
-
-export const SEARCH_BY_SLUG = "@";
-export const SEACH_BY_TAG = "#";
-export const getParamStringFromLocation = ({pathname}) => {
-  const searchBy = pathname[1];
-  const searchTerm = pathname.substring(2);
-  switch(searchBy) {
-    case SEARCH_BY_SLUG:
-      return `slug=${searchTerm}`;
-    case SEACH_BY_TAG:
-      return `tag=${searchTerm}`;
-    default:
-      return "";
-  }
-};
