@@ -121,13 +121,16 @@ class UserDetailSerializer(serializers.ModelSerializer):
         return instance
 
 
-class PostDetailSerializer(serializers.ModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
     # TODO: require login
     # TODO: require ownership for update destroy
     class Meta:
         model = Post
-        fields = ("id", "body", "user", )
-        read_only_fields = ("id", "user", )
+        fields = ("id", "body", "created", "user", )
+        read_only_fields = ("id", "user", "created")
+
+
+class PostCreateSerializer(PostSerializer):
 
     def create(self, validated_data):
         user = self.context["request"].user
@@ -135,3 +138,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
             raise exceptions.ValidationError("must be logged in to post")
         post = Post.objects.create(user=user, **validated_data)
         return post
+
+
+class PostDetailSerializer(PostSerializer):
+    user = UserDetailSerializer()

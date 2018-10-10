@@ -5,9 +5,10 @@ import {createPost, changePostBody} from "../../actions/postsActions";
 import {getPostFormBody} from "../../reducers/selectors";
 
 const PostForm = ({body, createPost, changePostBody}) => (
-  <div className="px-4 py-2 bg-primary-light">
-    <form onSubmit={e => {e.preventDefault(); return createPost(body);}}>
-      <input className="p-1 border-0 rounded" type="text" value={body}
+  <div className="px-4 py-2 bg-primary-light d-flex">
+    <form className="flex-fill"
+      onSubmit={e => {e.preventDefault(); return createPost(body);}}>
+      <input className="p-1 border-0 rounded w-100" type="text" value={body}
         placeholder="What's on your mind?" name="body"
         onChange={e => changePostBody(e.target.value)}
       />

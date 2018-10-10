@@ -13,6 +13,7 @@ from .serializers import (
     UserDetailSerializer,
     SignUpSerializer,
     LoginSerializer,
+    PostCreateSerializer,
     PostDetailSerializer
 )
 from .models import Post, Profile
@@ -127,10 +128,15 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class PostListView(generics.ListCreateAPIView):
+class PostListCreateView(generics.ListCreateAPIView):
     # TODO: require login
-    # TODO: Filters: tag
     serializer_class = PostDetailSerializer
+
+    def get_serializer_class(self):
+        method = self.request.method
+        if method == "POST":
+            return PostCreateSerializer
+        return PostDetailSerializer
 
     def get_queryset(self):
         queryset = Post.objects.all()
@@ -140,6 +146,13 @@ class PostListView(generics.ListCreateAPIView):
             queryset = queryset.filter(user__id=user_id)
         queryset = queryset.order_by("-created")
         return queryset
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        post = serializer.save()
+        result = PostDetailSerializer(post)
+        return Response(result.data, status=status.HTTP_201_CREATED)
 
 
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):

@@ -7,7 +7,7 @@ urlpatterns = [
     path("users/@<slug:user_slug>/", views.UserDetailView.as_view()),
     path("users/<int:pk>/", views.UserDetailView.as_view()),
 
-    path("posts/", views.PostListView.as_view()),
+    path("posts/", views.PostListCreateView.as_view()),
     path("posts/<int:pk>/", views.PostDetailView.as_view()),
 
     path("follows/", views.create_destroy_follow),

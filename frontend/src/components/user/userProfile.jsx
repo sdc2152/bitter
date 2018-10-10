@@ -15,8 +15,7 @@ import {
 
 import UserNotFound from "./userNotFound";
 import UserLoading from "./userLoading";
-import UserInfo from "./userInfo";
-import PostForm from "../posts/postForm";
+import UserInfoProfile from "./userInfoProfile";
 import PostList from "../posts/postsList";
 
 class UserProfile extends React.Component {
@@ -40,12 +39,11 @@ class UserProfile extends React.Component {
       isDisplayUserFound ?
       (
         <div className="d-flex p-2 justify-content-start">
-          <div className="mr-2 bg-white">
-            <UserInfo user={displayUser} />
+          <div className="mr-2">
+            <UserInfoProfile user={displayUser} />
           </div>
 
           <div className="ml-2 bg-white center-display rounded-bottom">
-            <PostForm />
             <PostList fetchPosts={fetchPosts(displayUser)}/>
           </div>
 
