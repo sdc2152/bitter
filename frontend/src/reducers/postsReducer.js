@@ -4,19 +4,24 @@ import {normalizeArray} from "../apiUtils";
 
 import {
   ADD_POST,
-  RECEIVE_POST_ERRORS,
+  REMOVE_POST,
   RECEIVE_POSTS,
-  RECEIVE_POSTS_ERRORS,
   IS_FETCHING_POSTS,
   CHANGE_POST_BODY,
   CREATE_POST_SUCCESS,
+  RECEIVE_POST_ERRORS,
+  RECEIVE_POSTS_ERRORS,
+  CLEAR_POST_ERRORS,
 } from "../actions/postsActions";
 
 const postIds = (state=[], action) => {
+  console.log(action.type);
   Object.freeze(state);
   switch(action.type) {
     case ADD_POST:
       return [action.post.id, ...state];
+    case REMOVE_POST:
+      return state.filter(i => i !== action.postId);
     case RECEIVE_POSTS:
       // TODO: the problem here is that clicking links without reloading page
       //       will keep adding posts to the post state. there needs to be a
@@ -34,6 +39,11 @@ const byIds = (state={}, action) => {
   switch(action.type) {
     case ADD_POST:
       return Object.assign({}, state, {[action.post.id]: action.post});
+    case REMOVE_POST: {
+      let newState = Object.assign({}, state);
+      delete newState[action.postId];
+      return newState;
+    }
     case RECEIVE_POSTS: {
       return normalizeArray(action.posts, "id");
     }
@@ -49,6 +59,8 @@ const errors = (state={}, action) => {
     case RECEIVE_POST_ERRORS:
     case RECEIVE_POSTS_ERRORS:
       return Object.assign({}, state, action.errors);
+    case CLEAR_POST_ERRORS:
+      return {};
     default:
       return state;
   }

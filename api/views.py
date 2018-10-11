@@ -9,6 +9,8 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
 
+from .models import Post, Profile
+from .permissions import IsOwnerOrReadOnly
 from .serializers import (
     UserDetailSerializer,
     SignUpSerializer,
@@ -16,7 +18,6 @@ from .serializers import (
     PostCreateSerializer,
     PostDetailSerializer
 )
-from .models import Post, Profile
 
 
 class LoginView(generics.GenericAPIView):
@@ -69,12 +70,38 @@ class SignUpView(generics.CreateAPIView):
         response_serializer = UserDetailSerializer(
             instance=user, context={"request": request}
         )
-        return Response(response_serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            response_serializer.data, status=status.HTTP_201_CREATED
+        )
 
 
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
+
+
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        user_slug = self.kwargs.get("user_slug", None)
+        if user_slug is not None:
+            user = get_object_or_404(queryset, profile__slug=user_slug)
+        user_id = self.kwargs.get("pk", None)
+        if user_id is not None:
+            user = get_object_or_404(queryset, id=user_id)
+        return user
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.serializer_class(
+            instance, data=request.data, partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["POST", "DELETE", ])
@@ -102,30 +129,6 @@ def create_destroy_follow(request):
         )
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserDetailSerializer
-
-    def get_object(self):
-        queryset = self.get_queryset()
-        user_slug = self.kwargs.get("user_slug", None)
-        if user_slug is not None:
-            user = get_object_or_404(queryset, profile__slug=user_slug)
-        user_id = self.kwargs.get("pk", None)
-        if user_id is not None:
-            user = get_object_or_404(queryset, id=user_id)
-        return user
-
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.serializer_class(
-            instance, data=request.data, partial=True
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class PostListCreateView(generics.ListCreateAPIView):
@@ -159,3 +162,4 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     # TODO: require login/ownership for update and destroy
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
+    permission_classes = (IsOwnerOrReadOnly, )

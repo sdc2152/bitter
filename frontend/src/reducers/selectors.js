@@ -11,7 +11,7 @@ export const getNonFieldErrors = ({auth}) => auth.errors.non_field_errors;
 export const getCurrentUser = ({auth}) => auth.user;
 export const getCurrentUserId = ({auth}) => auth.user.id;
 export const getCurrentUserFollows = ({auth}) => (
-  auth.user.profile.follows
+  auth.user.profile ? auth.user.profile.follows : undefined
 );
 
 // User selectors

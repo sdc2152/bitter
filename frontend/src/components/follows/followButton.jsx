@@ -3,32 +3,35 @@ import {connect} from "react-redux";
 
 import {createFollow, deleteFollow} from "../../actions/userActions";
 import {
+  isLoggedIn,
   getCurrentUserFollows,
-  getCurrentUserId
+  getCurrentUserId,
 } from "../../reducers/selectors";
 
 const FollowButton = ({
   userId,
+  isLoggedIn,
   currentUserFollows,
   currentUserId,
   createFollow,
-  deleteFollow
+  deleteFollow,
 }) => {
-  return currentUserId === userId ?
-    null
+  return currentUserId === userId || !isLoggedIn?
+  null
   :
   currentUserFollows.includes(userId) ?
-    (
-      <button onClick={() => deleteFollow(userId)}>unfollow</button>
-    )
+  (
+    <button onClick={() => deleteFollow(userId)}>unfollow</button>
+  )
   :
-    (
-      <button onClick={() => createFollow(userId)}>follow</button>
-    );
+  (
+    <button onClick={() => createFollow(userId)}>follow</button>
+  );
 };
 
 const mapStateToProps = state => (
   {
+    isLoggedIn: isLoggedIn(state),
     currentUserFollows: getCurrentUserFollows(state),
     currentUserId: getCurrentUserId(state),
   }

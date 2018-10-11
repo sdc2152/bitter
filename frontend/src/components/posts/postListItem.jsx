@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import PostDropDown from "./postDropDown";
 
 const PostListItem = ({post}) => {
   const {body, user, created} = post;
@@ -11,6 +12,7 @@ const PostListItem = ({post}) => {
         <Link to={`/${slug}`}>
           {username}@{slug}
         </Link>
+        <PostDropDown post={post} />
         {created}
       </div>
       <div className="p-2">

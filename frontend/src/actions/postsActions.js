@@ -2,20 +2,12 @@ import {getCSRFToken, getParamString} from "../apiUtils";
 
 // Posts -----------------
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
-export const RECEIVE_POSTS_ERRORS = "RECEIVE_POSTS_ERRORS";
 export const IS_FETCHING_POSTS = "IS_FETCHING_POSTS";
 
 export const receivePosts = posts => (
   {
     type: RECEIVE_POSTS,
     posts: posts,
-  }
-);
-
-export const receivePostsErrors = errors => (
-  {
-    type: RECEIVE_POSTS_ERRORS,
-    errors: errors,
   }
 );
 
@@ -27,7 +19,7 @@ export const isFetchingPosts = () => (
 
 // Post -----------------
 export const ADD_POST = "ADD_POST";
-export const RECEIVE_POST_ERRORS = "RECEIVE_POST_ERRORS";
+export const REMOVE_POST = "REMOVE_POST";
 
 export const addPost = post => (
   {
@@ -36,10 +28,10 @@ export const addPost = post => (
   }
 );
 
-export const receivePostErrors = errors => (
+export const removePost = postId => (
   {
-    type: RECEIVE_POST_ERRORS,
-    errors: errors,
+    type: REMOVE_POST,
+    postId: postId,
   }
 );
 
@@ -60,6 +52,32 @@ export const createPostSuccess = () => (
   }
 );
 
+// Errors -----------------
+export const RECEIVE_POSTS_ERRORS = "RECEIVE_POSTS_ERRORS";
+export const RECEIVE_POST_ERRORS = "RECEIVE_POST_ERRORS";
+export const CLEAR_POST_ERRORS = "CLEAR_POST_ERRORS";
+
+export const receivePostsErrors = errors => (
+  {
+    type: RECEIVE_POSTS_ERRORS,
+    errors: errors,
+  }
+);
+
+export const receivePostErrors = errors => (
+  {
+    type: RECEIVE_POST_ERRORS,
+    errors: errors,
+  }
+);
+
+export const clearPostErrors = () => (
+  {
+    type: CLEAR_POST_ERRORS,
+  }
+);
+
+
 // AJAX ---------------
 export const createPost = body => (
   dispatch => {
@@ -77,11 +95,38 @@ export const createPost = body => (
         response.ok ?
         response.json().then(json => dispatch(addPost(json)))
         .then(() => dispatch(createPostSuccess()))
+        .then(() => dispatch(clearPostErrors()))
         :
         response.json().then(json => dispatch(receivePostErrors(json)))
       ));
   }
 );
+
+export const deletePost = postId => (
+  dispatch => {
+    return fetch(`/api/posts/${postId}/`, {
+      method: "DELETE",
+      credentials: "same-origin",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken()
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          dispatch(clearPostErrors());
+          dispatch(removePost(postId));
+        }
+        else {
+          return response.json().then(
+            json => dispatch(receivePostErrors(json))
+          );
+        }
+      });
+  }
+);
+
 
 export const HOME_PAGE = "HOME_PAGE";
 export const PROFILE_PAGE = "PROFILE_PAGE";
@@ -107,6 +152,7 @@ export const fetchPosts = (params={}) => (
       .then(response => (
         response.ok ?
         response.json().then(json => dispatch(receivePosts(json)))
+        .then(() => dispatch(clearPostErrors()))
         :
         response.json().then(json => dispatch(receivePostsErrors(json)))
       ));
