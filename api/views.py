@@ -108,27 +108,21 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 def create_destroy_follow(request):
     user = request.user
     profile = user.profile
-    other_profile = Profile.objects.get(user__id=request.data.get("id"))
-    # TODO: maybe need to move to after change so that correct serialization
+    other_profile = get_object_or_404(Profile, user__id=request.data["id"])
+
+    if request.method == "POST":
+        profile.follows.add(other_profile)
+        return_status = status.HTTP_201_CREATED
+    elif request.method == "DELETE":
+        profile.follows.remove(other_profile)
+        return_status = status.HTTP_200_OK
+
+    profile.save()
+    user.profile = profile
     response_serializer = UserDetailSerializer(
         instance=user, context={"request": request}
     )
-    if request.method == "POST":
-        profile.follows.add(other_profile)
-        profile.save()
-        return Response(
-            data=response_serializer.data,
-            status=status.HTTP_201_CREATED
-        )
-    elif request.method == "DELETE":
-        profile.follows.remove(other_profile)
-        profile.save()
-        return Response(
-            data=response_serializer.data,
-            status=status.HTTP_200_OK
-        )
-
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+    return Response(data=response_serializer.data, status=return_status)
 
 
 class PostListCreateView(generics.ListCreateAPIView):

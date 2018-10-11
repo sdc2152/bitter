@@ -21,11 +21,19 @@ const FollowButton = ({
   :
   currentUserFollows.includes(userId) ?
   (
-    <button onClick={() => deleteFollow(userId)}>unfollow</button>
+    <button className="btn btn-primary"
+      onClick={() => deleteFollow(userId)}
+    >
+      unfollow
+    </button>
   )
   :
   (
-    <button onClick={() => createFollow(userId)}>follow</button>
+    <button className="btn btn-outline-primary"
+      onClick={() => createFollow(userId)}
+    >
+      follow
+    </button>
   );
 };
 

@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./styles/main.css";
 
 import React, { Component } from "react";
+import Modal from "react-modal";
 import {connect} from "react-redux";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
@@ -15,6 +16,8 @@ import Login from "./components/auth/login";
 import SignUp from "./components/auth/signUp";
 import UserProfile from "./components/user/userProfile";
 import NotFound from "./components/notFound";
+
+Modal.setAppElement("#root");
 
 class App extends Component {
   componentWillMount() {

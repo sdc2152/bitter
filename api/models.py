@@ -16,6 +16,7 @@ class Profile(DateTimeModel):
     follows = models.ManyToManyField(
         "self",
         related_name="followers",
+        symmetrical=False,
         blank=True
     )
     description = models.CharField(max_length=200, default="")

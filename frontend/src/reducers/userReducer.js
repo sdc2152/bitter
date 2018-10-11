@@ -12,6 +12,7 @@ const defaultState = {
 
 function user(state=defaultState, action) {
   Object.freeze(state);
+  console.log(action);
   switch(action.type) {
     case RECEIVE_DISPLAY_USER:
       return Object.assign({}, state, {

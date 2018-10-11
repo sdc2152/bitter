@@ -2,6 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 import AuthStatus from "./auth/authStatus";
+import TweetButton from "./tweetButton";
 
 const NavBar = () => {
   return (
@@ -13,6 +14,7 @@ const NavBar = () => {
         <div className="d-flex flex-row-reverse bd-highlight">
           <AuthStatus />
         </div>
+        <TweetButton />
     </nav>
   );
 };
