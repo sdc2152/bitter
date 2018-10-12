@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Redirect} from "react-router-dom";
+import {Redirect, Link} from "react-router-dom";
 
 import {loginUser, clearErrors} from "../../actions/authActions";
 import {
@@ -37,6 +37,7 @@ class Login extends React.Component {
     this.props.loginUser(username, password);
   }
 
+  // TODO: change the onSubmit to just call handleSubmit with no username/pw
   render() {
     const {
       usernameErrors,
@@ -45,29 +46,44 @@ class Login extends React.Component {
       isLoggedIn,
     } = this.props;
     const {username, password} = this.state;
-    return isLoggedIn ?  <Redirect to="/"/> : (
-      <div>
-        <h1>
-          login
-        </h1>
-        <form onSubmit={(e) => this.handleSubmit(e, username, password)}>
-          <label>
-            <AuthErrors errors={nonFieldErrors} />
-            Username
-            <input type="text" value={username}
-              onChange={this.handleChange} name="username"
-            />
-            <AuthErrors errors={usernameErrors} />
-          </label>
-          <label>
-            Password
-            <input type="password" value={password}
-              onChange={this.handleChange} name="password"
-            />
-            <AuthErrors errors={passwordErrors} />
-          </label>
-          <input type="submit" value="Login" />
-        </form>
+    return isLoggedIn ?
+    <Redirect to="/"/>
+    :
+    (
+      <div className="m-3 border">
+        <div className="bg-white p-5">
+          <h4>
+            Login to Bitter
+          </h4>
+
+          <form onSubmit={(e) => this.handleSubmit(e, username, password)}>
+
+            <div>
+              <AuthErrors errors={nonFieldErrors} />
+
+              <input type="text" value={username} placeholder="username"
+                onChange={this.handleChange} name="username"
+              />
+              <AuthErrors errors={usernameErrors} />
+            </div>
+
+            <div>
+              <input type="password" value={password} placeholder="password"
+                onChange={this.handleChange} name="password"
+              />
+              <AuthErrors errors={passwordErrors} />
+            </div>
+
+            <input className="btn btn-primary" type="submit" value="Login" />
+          </form>
+        </div>
+
+        <div className="bg-light p-5">
+          <h5>
+            New to Bitter?
+            <Link className="text-primary pl-1" to="signup">Sign up now</Link>
+          </h5>
+        </div>
       </div>
     );
   }
