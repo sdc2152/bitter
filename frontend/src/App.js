@@ -32,7 +32,7 @@ class App extends Component {
       <Router >
         <div className="App">
             <Route component={NavBar} />
-            <div className="body mx-lg-5 mx-sm-3">
+            <div className="body">
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/login" component={Login} />

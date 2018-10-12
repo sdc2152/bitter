@@ -11,10 +11,10 @@ const NavBar = () => {
           <Link className="nav-link" to="/">Home</Link>
         </div>
 
-        <div className="d-flex flex-row-reverse bd-highlight">
+        <div className="d-flex bd-highlight">
           <AuthStatus />
+          <TweetButton />
         </div>
-        <TweetButton />
     </nav>
   );
 };

@@ -54,7 +54,7 @@ export const createFollow = id => (
         response.ok ?
         response.json().then(json => dispatch(receiveUser(json)))
         :
-        console.log(response.json())
+        response.json().then(json => console.log(json))
       ));
   }
 );
@@ -75,7 +75,7 @@ export const deleteFollow = id => (
         response.ok ?
         response.json().then(json => dispatch(receiveUser(json)))
         :
-        console.log(response.json())
+        response.json().then(json => console.log(json))
       ));
   }
 );

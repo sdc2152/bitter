@@ -1,21 +1,20 @@
 import {combineReducers} from "redux";
-
 import {normalizeArray} from "../apiUtils";
-
 import {
-  ADD_POST,
-  REMOVE_POST,
+  ADD_POST, REMOVE_POST,
   RECEIVE_POSTS,
   IS_FETCHING_POSTS,
   CHANGE_POST_BODY,
+  CHANGE_POST_MODAL_BODY,
   CREATE_POST_SUCCESS,
+  OPEN_POST_MODAL,
+  CLOSE_POST_MODAL,
   RECEIVE_POST_ERRORS,
   RECEIVE_POSTS_ERRORS,
   CLEAR_POST_ERRORS,
 } from "../actions/postsActions";
 
 const postIds = (state=[], action) => {
-  console.log(action.type);
   Object.freeze(state);
   switch(action.type) {
     case ADD_POST:
@@ -55,7 +54,6 @@ const byIds = (state={}, action) => {
 const errors = (state={}, action) => {
   Object.freeze(state);
   switch(action.type) {
-    // TODO: maybe change this so different errors ?? idk
     case RECEIVE_POST_ERRORS:
     case RECEIVE_POSTS_ERRORS:
       return Object.assign({}, state, action.errors);
@@ -97,10 +95,32 @@ const form = (state=defaultPostForm, action) => {
   }
 };
 
+const defaultPostModal = {
+  isOpen: false,
+  body: "",
+};
+
+const formModal = (state=defaultPostModal, action) => {
+  Object.freeze(state);
+  switch(action.type) {
+    case OPEN_POST_MODAL:
+      return Object.assign({}, state, {isOpen: true});
+    case CLOSE_POST_MODAL:
+      return Object.assign({}, state, {isOpen: false});
+    case CHANGE_POST_MODAL_BODY:
+      return Object.assign({}, state, {body: action.body});
+    case CREATE_POST_SUCCESS:
+      return Object.assign({}, state, {body: "", isOpen: false});
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   byIds,
   postIds,
   errors,
   isFetching,
   form,
+  formModal,
 });

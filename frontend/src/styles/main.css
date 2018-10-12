@@ -19,3 +19,8 @@
 .user-info-home {
   padding: 120px 60px 50px 60px;
 }
+
+/*Home*/
+.center-home {
+  max-width: 350px;
+}
