@@ -1,5 +1,8 @@
 .body {
-  margin-top: 85px;
+  top: 70px;
+  bottom: 20px;
+  position: absolute;
+  width: 100%;
 }
 
 .center-display {
@@ -23,4 +26,14 @@
 /*Home*/
 .center-home {
   max-width: 350px;
+}
+
+/*Sign Up*/
+.center-signup {
+  max-width: 600px;
+}
+
+/*Post List */
+.post-list {
+  min-width: 590px;
 }

@@ -16,7 +16,7 @@ class PostList extends React.Component {
       post => <PostListItem key={post.id} post={post} />
       );
     return (
-      <div>
+      <div className="post-list">
         <ul className="list-group list-group-flush">
           {postsList}
         </ul>

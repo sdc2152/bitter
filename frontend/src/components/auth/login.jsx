@@ -58,23 +58,28 @@ class Login extends React.Component {
 
           <form onSubmit={(e) => this.handleSubmit(e, username, password)}>
 
-            <div>
+            <div className="form-group w-75">
               <AuthErrors errors={nonFieldErrors} />
 
-              <input type="text" value={username} placeholder="username"
+              <input className="form-control"
+                type="text" value={username} placeholder="username"
                 onChange={this.handleChange} name="username"
               />
               <AuthErrors errors={usernameErrors} />
             </div>
 
-            <div>
-              <input type="password" value={password} placeholder="password"
+            <div className="form-group w-75">
+              <input className="form-control"
+                type="password" value={password} placeholder="password"
                 onChange={this.handleChange} name="password"
               />
               <AuthErrors errors={passwordErrors} />
             </div>
 
-            <input className="btn btn-primary" type="submit" value="Login" />
+            <div className="pt-4">
+              <input className="btn btn-primary px-4" type="submit"
+                value="Login" />
+            </div>
           </form>
         </div>
 

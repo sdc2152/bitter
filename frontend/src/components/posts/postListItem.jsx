@@ -8,13 +8,20 @@ const PostListItem = ({post}) => {
   const {slug} = profile;
   return (
     <li className="list-group-item">
-      <div>
-        <Link to={`/${slug}`}>
-          {username}@{slug}
-        </Link>
+      <div className="d-flex justify-content-between">
+
+        <div>
+          <Link to={`/${slug}`}>
+            {username}@{slug}
+          </Link>
+          <div>
+            {created}
+          </div>
+        </div>
+
         <PostDropDown post={post} />
-        {created}
       </div>
+
       <div className="p-2">
         {body}
       </div>
