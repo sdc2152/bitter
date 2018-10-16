@@ -50,44 +50,46 @@ class Login extends React.Component {
     <Redirect to="/"/>
     :
     (
-      <div className="m-3 border">
-        <div className="bg-white p-5">
-          <h4>
-            Login to Bitter
-          </h4>
+      <div className="position-fixed w-100">
+        <div className="m-3 border">
+          <div className="bg-white p-5">
+            <h4>
+              Login to Bitter
+            </h4>
 
-          <form onSubmit={(e) => this.handleSubmit(e, username, password)}>
+            <form onSubmit={(e) => this.handleSubmit(e, username, password)}>
 
-            <div className="form-group w-75">
-              <AuthErrors errors={nonFieldErrors} />
+              <div className="form-group w-75">
+                <AuthErrors errors={nonFieldErrors} />
 
-              <input className="form-control"
-                type="text" value={username} placeholder="username"
-                onChange={this.handleChange} name="username"
-              />
-              <AuthErrors errors={usernameErrors} />
-            </div>
+                <input className="form-control"
+                  type="text" value={username} placeholder="username"
+                  onChange={this.handleChange} name="username"
+                />
+                <AuthErrors errors={usernameErrors} />
+              </div>
 
-            <div className="form-group w-75">
-              <input className="form-control"
-                type="password" value={password} placeholder="password"
-                onChange={this.handleChange} name="password"
-              />
-              <AuthErrors errors={passwordErrors} />
-            </div>
+              <div className="form-group w-75">
+                <input className="form-control"
+                  type="password" value={password} placeholder="password"
+                  onChange={this.handleChange} name="password"
+                />
+                <AuthErrors errors={passwordErrors} />
+              </div>
 
-            <div className="pt-4">
-              <input className="btn btn-primary px-4" type="submit"
-                value="Login" />
-            </div>
-          </form>
-        </div>
+              <div className="pt-4">
+                <input className="btn btn-primary px-4" type="submit"
+                  value="Login" />
+              </div>
+            </form>
+          </div>
 
-        <div className="bg-light p-5">
-          <h5>
-            New to Bitter?
-            <Link className="text-primary pl-1" to="signup">Sign up now</Link>
-          </h5>
+          <div className="bg-light p-5">
+            <h5>
+              New to Bitter?
+              <Link className="text-primary pl-1" to="signup">Sign up now</Link>
+            </h5>
+          </div>
         </div>
       </div>
     );

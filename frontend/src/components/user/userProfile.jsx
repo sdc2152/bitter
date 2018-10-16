@@ -34,7 +34,10 @@ class UserProfile extends React.Component {
       isFetchingDisplayUser,
       isUserNotFound,
       displayUser,
+      match,
     } = this.props;
+    const {params} = match;
+    // TODO: put the fetching display user loading screen on userinfo page
     return (
       isFetchingDisplayUser ?
       <Loading />
@@ -67,7 +70,8 @@ class UserProfile extends React.Component {
               </div>
 
               <div className="ml-2 bg-white center-display rounded-bottom">
-                <PostList params={getProfilePageFetchParams(displayUser)}/>
+                <PostList params={getProfilePageFetchParams(params)}
+                />
               </div>
             </div>
           </div>

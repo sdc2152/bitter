@@ -3,6 +3,7 @@ import {getCSRFToken, getParamString} from "../apiUtils";
 // Posts -----------------
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
 export const IS_FETCHING_POSTS = "IS_FETCHING_POSTS";
+export const CLEAR_POSTS = "CLEAR_POSTS";
 
 export const receivePosts = posts => (
   {
@@ -14,6 +15,12 @@ export const receivePosts = posts => (
 export const isFetchingPosts = () => (
   {
     type: IS_FETCHING_POSTS,
+  }
+);
+
+export const clearPosts = () => (
+  {
+    type: CLEAR_POSTS,
   }
 );
 
@@ -150,39 +157,59 @@ export const deletePost = postId => (
 );
 
 
-export const HOME_PAGE = "HOME_PAGE";
 export const PROFILE_PAGE = "PROFILE_PAGE";
+export const HOME_PAGE = "HOME_PAGE";
+export const TAG_PAGE = "TAG_PAGE";
 
-export const getProfilePageFetchParams = user => (
+export const getProfilePageFetchParams = ({userSlug}) => (
   {
-    user_id: user.id,
-    context: PROFILE_PAGE,
+    USER_SLUG: userSlug,
+    type: PROFILE_PAGE,
   }
 );
 
-export const getHomePageFetchParams = user => (
+export const getHomePageFetchParams = ({id}) => (
   {
-    user_id: user.id,
-    context: HOME_PAGE,
+    USER_ID: id,
+    type: HOME_PAGE,
   }
 );
 
-export const getTagPageFetchParams = params => (
+export const getTagPageFetchParams = ({tagName}) => (
   {
-    tag_name: params.tagName,
+    TAG_NAME: tagName,
+    type: TAG_PAGE,
   }
 );
+
+export const isDifferentFetchParams = (oldParams, newParams) => {
+  if (oldParams.type !== newParams.type) {
+    return true;
+  }
+  switch(oldParams.type) {
+    case HOME_PAGE:
+      return oldParams.USER_ID !== newParams.USER_ID;
+    case PROFILE_PAGE:
+      return oldParams.USER_SLUG !== newParams.USER_SLUG;
+    case TAG_PAGE:
+      return oldParams.TAG_NAME !== newParams.TAG_NAME;
+    default:
+      return false;
+  }
+};
 
 export const fetchPosts = (params={}) => (
   dispatch => {
     dispatch(isFetchingPosts());
     return fetch(`/api/posts/?${getParamString(params)}`)
-      .then(response => (
-        response.ok ?
-        response.json().then(json => dispatch(receivePosts(json)))
-        .then(() => dispatch(clearPostErrors()))
-        :
-        response.json().then(json => dispatch(receivePostsErrors(json)))
-      ));
+      .then(response => {
+        if (response.ok) {
+          return response.json().then(json => dispatch(receivePosts(json)))
+          .then(() => dispatch(clearPostErrors()));
+        } else {
+          return response.json().then(json => dispatch(receivePostsErrors(json)));
+        }
+      }
+    );
   }
 );

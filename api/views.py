@@ -138,12 +138,19 @@ class PostListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Post.objects.all()
         params = self.request.query_params
-        user_id = params.get("user_id", None)
+
+        user_slug = params.get("USER_SLUG", None)
+        if user_slug:
+            queryset = queryset.filter(user__profile__slug=user_slug)
+
+        user_id = params.get("USER_ID", None)
         if user_id:
             queryset = queryset.filter(user__id=user_id)
-        tag_name = params.get("tag_name", None)
+
+        tag_name = params.get("TAG_NAME", None)
         if tag_name:
             queryset = queryset.filter(tags__name=tag_name)
+
         queryset = queryset.order_by("-created")
         return queryset
 

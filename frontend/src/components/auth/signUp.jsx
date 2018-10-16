@@ -47,47 +47,47 @@ class SignUp extends React.Component {
     } = this.props;
     return isLoggedIn ?  <Redirect to="/" /> :
       (
-        <div className="bg-white h-100">
+        <div className="position-fixed w-100">
+          <div className="bg-white h-100">
+            <div className="center-signup p-5 mx-auto">
+              <h4>
+                Create your account
+              </h4>
 
-          <div className="center-signup p-5 mx-auto">
-            <h4>
-              Create your account
-            </h4>
+              <form onSubmit={(e) => this.handleSubmit(e, username, password)}>
+                <AuthErrors errors={nonFieldErrors} />
 
-            <form onSubmit={(e) => this.handleSubmit(e, username, password)}>
-              <AuthErrors errors={nonFieldErrors} />
+                <div className="form-group pt-3">
+                  <input className="form-control border-top-0 border-right-0
+                    border-left-0" type="text"
+                    value={username} placeholder="username"
+                    onChange={this.handleChange} name="username" />
+                  <AuthErrors errors={usernameErrors} />
+                </div>
 
-              <div className="form-group pt-3">
-                <input className="form-control border-top-0 border-right-0
-                  border-left-0" type="text"
-                  value={username} placeholder="username"
-                  onChange={this.handleChange} name="username" />
-                <AuthErrors errors={usernameErrors} />
-              </div>
+                <div className="form-group pt-3">
+                  <input className="form-control border-top-0 border-right-0
+                    border-left-0" type="password"
+                    value={password} placeholder="password"
+                    onChange={this.handleChange} name="password" />
+                  <AuthErrors errors={passwordErrors} />
+                </div>
 
-              <div className="form-group pt-3">
-                <input className="form-control border-top-0 border-right-0
-                  border-left-0" type="password"
-                  value={password} placeholder="password"
-                  onChange={this.handleChange} name="password" />
-                <AuthErrors errors={passwordErrors} />
-              </div>
+                <div className="d-flex flex-row-reverse pt-3">
+                  <input className="btn btn-primary btn-md px-4" type="submit"
+                    value="Sign Up"
+                  />
+                </div>
 
-              <div className="d-flex flex-row-reverse pt-3">
-                <input className="btn btn-primary btn-md px-4" type="submit"
-                  value="Sign Up"
-                />
-              </div>
-
-              <div className="text-center pt-5">
-                <h6>
-                  Or if you already have an account
-                  <Link className="pl-1" to="login">login here</Link>
-                </h6>
-              </div>
-            </form>
+                <div className="text-center pt-5">
+                  <h6>
+                    Or if you already have an account
+                    <Link className="pl-1" to="login">login here</Link>
+                  </h6>
+                </div>
+              </form>
+            </div>
           </div>
-
         </div>
     );
   }

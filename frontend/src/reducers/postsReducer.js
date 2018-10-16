@@ -4,6 +4,7 @@ import {
   ADD_POST, REMOVE_POST,
   RECEIVE_POSTS,
   IS_FETCHING_POSTS,
+  CLEAR_POSTS,
   CHANGE_POST_BODY,
   CHANGE_POST_MODAL_BODY,
   CREATE_POST_SUCCESS,
@@ -28,6 +29,8 @@ const postIds = (state=[], action) => {
       //       ADD_POSTS and ADD_POST for adding to the state and RECEIVE for
       //       replacing
       return action.posts.map(post => post.id);
+    case CLEAR_POSTS:
+      return [];
     default:
       return state;
   }
@@ -46,6 +49,8 @@ const byIds = (state={}, action) => {
     case RECEIVE_POSTS: {
       return normalizeArray(action.posts, "id");
     }
+    case CLEAR_POSTS:
+      return {};
     default:
       return state;
   }

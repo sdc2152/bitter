@@ -7,10 +7,9 @@ class TagDetail extends React.Component {
   render() {
     const {match} = this.props;
     const {params} = match;
-    const tagPageParams = getTagPageFetchParams(params);
     return (
       <div>
-        <PostList params={tagPageParams}/>
+        <PostList params={getTagPageFetchParams(params)}/>
       </div>
     );
   }

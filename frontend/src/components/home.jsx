@@ -9,7 +9,7 @@ const Home = ({isLoggedIn}) => (
   isLoggedIn ?
   <UserHome />
   :
-  <div className="pt-4 bg-white">
+  <div className="pt-4 bg-white position-fixed w-100">
     <div className="center-home mx-auto">
       <div>
         <h2>See what's happening in the world right now</h2>

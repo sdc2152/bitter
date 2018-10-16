@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {getIsFetchingPosts, getPosts} from "../../reducers/selectors";
-import {fetchPosts} from "../../actions/postsActions";
+import {fetchPosts, isDifferentFetchParams} from "../../actions/postsActions";
 
 import PostListItem from "./postListItem";
 import Loading from "../loading";
@@ -14,7 +14,8 @@ class PostList extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.params !== this.props.params) {
+    if (isDifferentFetchParams(this.props.params, newProps.params)) {
+      console.log(newProps.params, this.props.params);
       this.props.fetchPosts(newProps.params);
     }
   }
