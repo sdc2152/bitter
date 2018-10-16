@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 from django.db import models
 
 
@@ -22,20 +23,27 @@ class Profile(DateTimeModel):
     description = models.CharField(max_length=200, default="")
 
 
-# class Tag(DateTimeModel):
-    # name = models.CharField(max_length=200)
+class Tag(DateTimeModel):
+    name = models.SlugField(max_length=200, unique=True)
 
 
-# # TODO: maybe add a user reference ??? if someone has an @ sign
+# TODO: tags - save method --- or --- signal???
 # # TODO: how to calculate a large number of followers ? cache ??
 class Post(DateTimeModel):
     body = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # tags = models.ManyToManyKey(Tag)
+    tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.create_tags()
 
-# class Comment(DateTimeModel):
-    # body = models.CharField(max_length=200)
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # post = models.ForeingKey(Post, on_delete=models.CASCADE)
-    # comment = models.ForeingKey("self", on_delete=models.CASCADE)
+    def create_tags(self):
+        tag_set = set(self.parse_tags())
+        for tag in tag_set:
+            t, created = Tag.objects.get_or_create(name=tag)
+            t.save()
+            self.tags.add(t)
+
+    def parse_tags(self):
+        return [slugify(i) for i in self.body.split() if i.startswith("#")]

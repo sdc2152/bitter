@@ -15,6 +15,7 @@ import Home from "./components/home";
 import Login from "./components/auth/login";
 import SignUp from "./components/auth/signUp";
 import UserProfile from "./components/user/userProfile";
+import TagDetail from "./components/tag/tagDetail";
 import NotFound from "./components/notFound";
 
 Modal.setAppElement("#root");
@@ -37,6 +38,7 @@ class App extends Component {
                 <Route exact path="/" component={Home} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={SignUp} />
+                <Route path="/tag/:tagName" component={TagDetail}/>
                 <Route path="/:userSlug" component={UserProfile} />
                 <Route component={NotFound} />
               </Switch>

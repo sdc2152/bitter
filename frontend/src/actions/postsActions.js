@@ -167,6 +167,12 @@ export const getHomePageFetchParams = user => (
   }
 );
 
+export const getTagPageFetchParams = params => (
+  {
+    tag_name: params.tagName,
+  }
+);
+
 export const fetchPosts = (params={}) => (
   dispatch => {
     dispatch(isFetchingPosts());

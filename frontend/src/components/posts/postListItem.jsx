@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import PostDropDown from "./postDropDown";
+import PostBody from "./postBody";
 
 const PostListItem = ({post}) => {
   const {body, user, created} = post;
@@ -23,7 +24,9 @@ const PostListItem = ({post}) => {
       </div>
 
       <div className="p-2">
-        {body}
+        <PostBody>
+          {body}
+        </PostBody>
       </div>
     </li>
   );

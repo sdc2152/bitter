@@ -24,13 +24,19 @@ class UserProfile extends React.Component {
     this.props.fetchUserFromSlug(userSlug);
   }
 
+  componentWillReceiveProps(newProps) {
+    const {userSlug} = newProps.match.params;
+    if (userSlug !== this.props.match.params.userSlug) {
+      newProps.fetchUserFromSlug(userSlug);
+    }
+  }
+
   render() {
     const {
       isDisplayUserFound,
       isFetchingDisplayUser,
       isUserNotFound,
       displayUser,
-      fetchPosts,
     } = this.props;
     return (
       isFetchingDisplayUser ?
@@ -44,7 +50,7 @@ class UserProfile extends React.Component {
           </div>
 
           <div className="ml-2 bg-white center-display rounded-bottom">
-            <PostList fetchPosts={fetchPosts(displayUser)}/>
+            <PostList params={getProfilePageFetchParams(displayUser)}/>
           </div>
 
         </div>
@@ -61,9 +67,6 @@ class UserProfile extends React.Component {
 const mapDispatchToProps = dispatch => (
   {
     fetchUserFromSlug: slug => dispatch(fetchUserFromSlug(slug)),
-    fetchPosts: user => () => dispatch(
-      fetchPosts(getProfilePageFetchParams(user))
-    ),
   }
 );
 

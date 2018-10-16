@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
 
-from .models import Post, Profile
+from .models import Post, Profile, Tag
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (
     UserDetailSerializer,
@@ -139,8 +139,11 @@ class PostListCreateView(generics.ListCreateAPIView):
         queryset = Post.objects.all()
         params = self.request.query_params
         user_id = params.get("user_id", None)
-        if user_id is not None:
+        if user_id:
             queryset = queryset.filter(user__id=user_id)
+        tag_name = params.get("tag_name", None)
+        if tag_name:
+            queryset = queryset.filter(tags__name=tag_name)
         queryset = queryset.order_by("-created")
         return queryset
 

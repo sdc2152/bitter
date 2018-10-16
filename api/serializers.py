@@ -4,7 +4,7 @@ from django.utils.text import slugify
 from rest_framework import serializers, exceptions
 from random import random
 
-from .models import Profile, Post
+from .models import Profile, Post, Tag
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -119,7 +119,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
         )
         profile.save()
         return instance
-
 
 class PostSerializer(serializers.ModelSerializer):
     # TODO: require login

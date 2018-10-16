@@ -2,13 +2,13 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {getCurrentUser} from "../../reducers/selectors";
-import {fetchPosts, getHomePageFetchParams} from "../../actions/postsActions";
+import {getHomePageFetchParams} from "../../actions/postsActions";
 
 import PostList from "../posts/postsList";
 import PostForm from "../posts/postForm";
 import UserInfoHome from "./userInfoHome";
 
-const UserHome = ({currentUser, fetchPosts}) => {
+const UserHome = ({currentUser}) => {
   return (
     <div>
       <div className="d-flex p-2 justify-content-start">
@@ -18,7 +18,7 @@ const UserHome = ({currentUser, fetchPosts}) => {
 
         <div className="ml-2 bg-white center-display rounded-bottom">
           <PostForm />
-          <PostList fetchPosts={fetchPosts(currentUser)}/>
+          <PostList params={getHomePageFetchParams(currentUser)}/>
         </div>
 
       </div>
@@ -32,12 +32,4 @@ const mapStateToProps = state => (
   }
 );
 
-const mapDispatchToProps = dispatch => (
-  {
-    fetchPosts: user => () => dispatch(
-      fetchPosts(getHomePageFetchParams(user))
-    ),
-  }
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserHome);
+export default connect(mapStateToProps)(UserHome);

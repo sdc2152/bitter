@@ -1,13 +1,21 @@
 import React from "react";
 import {connect} from "react-redux";
+
 import {getPosts} from "../../reducers/selectors";
+import {fetchPosts} from "../../actions/postsActions";
 
 import PostListItem from "./postListItem";
 
 class PostList extends React.Component {
   componentWillMount() {
-    const {fetchPosts} = this.props;
-    fetchPosts();
+    const {fetchPosts, params} = this.props;
+    fetchPosts(params);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.params !== this.props.params) {
+      this.props.fetchPosts(newProps.params);
+    }
   }
 
   render() {
@@ -31,4 +39,10 @@ const mapStateToProps = state => (
   }
 );
 
-export default connect(mapStateToProps)(PostList);
+const mapDispatchToProps = dispatch => (
+  {
+    fetchPosts: params => dispatch(fetchPosts(params))
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostList);
