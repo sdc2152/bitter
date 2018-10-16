@@ -10,7 +10,7 @@ import UserInfoHome from "./userInfoHome";
 
 const UserHome = ({currentUser}) => {
   return (
-    <div>
+    <div className="app-container mx-auto">
       <div className="d-flex p-2 justify-content-start">
         <div className="mr-2">
           <UserInfoHome user={currentUser} />

@@ -1,10 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
 
-import {getPosts} from "../../reducers/selectors";
+import {getIsFetchingPosts, getPosts} from "../../reducers/selectors";
 import {fetchPosts} from "../../actions/postsActions";
 
 import PostListItem from "./postListItem";
+import Loading from "../loading";
 
 class PostList extends React.Component {
   componentWillMount() {
@@ -19,11 +20,14 @@ class PostList extends React.Component {
   }
 
   render() {
-    const {posts} = this.props;
+    const {posts, isFetchingPosts} = this.props;
     const postsList = posts.map(
       post => <PostListItem key={post.id} post={post} />
       );
-    return (
+    return isFetchingPosts ?
+      <Loading />
+      :
+      (
       <div className="post-list">
         <ul className="list-group list-group-flush">
           {postsList}
@@ -36,6 +40,7 @@ class PostList extends React.Component {
 const mapStateToProps = state => (
   {
     posts: getPosts(state),
+    isFetchingPosts: getIsFetchingPosts(state),
   }
 );
 

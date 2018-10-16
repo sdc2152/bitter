@@ -25,6 +25,7 @@ export const isFetchingDisplayUser = ({displayUser}) => displayUser.isFetching;
 export const getDisplayUser = ({displayUser}) => displayUser.user;
 
 // Post selectors
+export const getIsFetchingPosts = ({posts}) => posts.isFetching;
 export const getPosts = ({posts}) => posts.postIds.map(id => posts.byIds[id]);
 export const getPostFormBody = ({posts}) => posts.form.body;
 export const getPostModalBody = ({posts}) => posts.formModal.body;
