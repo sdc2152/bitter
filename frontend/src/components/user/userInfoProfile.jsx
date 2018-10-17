@@ -5,10 +5,10 @@ const UserInfoProfile = ({user}) => {
   const {id, username, profile, first_name, last_name, email} = user;
   const {description, slug} = profile;
   return (
-    <div className="bg-white user-info-home">
-      <div>
+    <div className="pt-5 user-info-width">
+      <div className="p-4">
         <div>
-          {username}
+          <h4>{username}</h4>
         </div>
         <div>
           @{slug}

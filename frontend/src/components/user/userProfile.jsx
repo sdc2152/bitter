@@ -37,7 +37,6 @@ class UserProfile extends React.Component {
       match,
     } = this.props;
     const {params} = match;
-    // TODO: put the fetching display user loading screen on userinfo page
     return (
       isFetchingDisplayUser ?
       <Loading />
@@ -45,22 +44,26 @@ class UserProfile extends React.Component {
       isDisplayUserFound ?
       (
         <div>
-
           <div className="profile-header">
             <div className="profile-header-top bg-primary">
-            </div>
 
-              <div className="profile-header-bottom bg-white">
-                <div className="app-container mx-auto">
-                  <div>
-                    hello
-                  </div>
-                  <div>
-                    hello
+              <div className="app-container h-100 position-relative mx-auto">
+                <div className="profile-header-pic">
+                  <div className="profile-pic bg-white rounded-circle">
                   </div>
                 </div>
               </div>
 
+            </div>
+
+              <div className="profile-header-bottom bg-white">
+                <div className="nav app-container mx-auto">
+                  <div className="user-info-width"></div>
+                  <div className="nav-link ml-2">
+                    Tweets
+                  </div>
+                </div>
+            </div>
           </div>
 
           <div className="app-container mx-auto">

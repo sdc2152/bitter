@@ -2,6 +2,7 @@
   top: 70px;
   bottom: 20px;
   position: absolute;
+  width: 100%;
 }
 
 .center-display {
@@ -23,11 +24,29 @@
 }
 
 /*User Profile*/
+.profile-header {
+  min-width: 900px;
+}
 .profile-header-top {
   height: 175px;
 }
 
 /*UserInfoHome*/
+.profile-header-pic {
+  bottom: -87px;
+  left: 10px;
+  position: absolute;
+}
+
+.profile-pic {
+  height: 200px;
+  width: 200px;
+}
+
+.user-info-width {
+  width: 290px;
+}
+
 .user-info-home {
   width: 290px;
   height: 209px;
