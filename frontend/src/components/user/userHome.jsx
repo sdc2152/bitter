@@ -2,7 +2,10 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {getCurrentUser} from "../../reducers/selectors";
-import {getHomePageFetchParams} from "../../actions/postsActions";
+import {
+  getHomePageFetchParams,
+  POST_CONTEXT,
+} from "../../actions/postsActions";
 
 import PostList from "../posts/postsList";
 import PostForm from "../posts/postForm";
@@ -17,7 +20,7 @@ const UserHome = ({currentUser}) => {
         </div>
 
         <div className="ml-2 bg-white center-display rounded-bottom">
-          <PostForm />
+          <PostForm postContext={POST_CONTEXT.HOME_PAGE}/>
           <PostList params={getHomePageFetchParams(currentUser)}/>
         </div>
 

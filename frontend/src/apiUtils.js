@@ -13,6 +13,10 @@ export const normalizeArray = (array, keyField) => (
   }, {})
 );
 
+export const normalizeEntry = (entry, keyField) => (
+  {[entry[keyField]]: entry}
+);
+
 export const getParamString = params => (
   Object.keys(params).map(k => `${k}=${params[k]}`).join("&")
 );

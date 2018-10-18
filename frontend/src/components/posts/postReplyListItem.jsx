@@ -5,8 +5,8 @@ import PostDropDown from "./postDropDown";
 import PostBody from "./postBody";
 import PostDetail from "./postDetail";
 
-const PostListItem = ({post}) => {
-  const {id, body, user, created} = post;
+const PostReplyListItem = ({reply}) => {
+  const {id, body, user, created} = reply;
   const {username, profile} = user;
   const {slug} = profile;
   return (
@@ -24,7 +24,7 @@ const PostListItem = ({post}) => {
             </div>
 
             <div className="post-item-dd">
-              <PostDropDown className="post-item-dd" post={post} />
+              <PostDropDown className="post-item-dd" post={reply} />
             </div>
           </div>
 
@@ -39,4 +39,4 @@ const PostListItem = ({post}) => {
   );
 };
 
-export default PostListItem;
+export default PostReplyListItem;

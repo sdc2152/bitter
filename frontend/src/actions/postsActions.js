@@ -25,13 +25,20 @@ export const clearPosts = () => (
 );
 
 // Post -----------------
-export const ADD_POST = "ADD_POST";
+export const RECEIVE_POST = "RECEIVE_POST";
 export const REMOVE_POST = "REMOVE_POST";
 
-export const addPost = post => (
+export const POST_CONTEXT = {
+  HOME_PAGE: "HOME_PAGE",
+  DISPLAY_PAGE: "DISPLAY_PAGE",
+  POST_DETAIL: "POST_DETAIL",
+};
+
+export const receivePost = (post, postContext) => (
   {
-    type: ADD_POST,
     post: post,
+    type: RECEIVE_POST,
+    postContext: postContext,
   }
 );
 
@@ -108,12 +115,23 @@ export const clearPostErrors = () => (
 
 
 // AJAX ---------------
-export const createPost = body => (
+export const getCreatePostData = (body, replyTo) => {
+  let data = {};
+  if (body) {
+    data.body = body;
+  }
+  if (replyTo) {
+    data.parent = replyTo;
+  }
+  return data;
+};
+
+export const createPost = (data, postContext) => (
   dispatch => {
     return fetch("/api/posts/", {
       method: "POST",
       credentials: "same-origin",
-      body: JSON.stringify({body: body}),
+      body: JSON.stringify(data),
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -122,7 +140,7 @@ export const createPost = body => (
     })
       .then(response => (
         response.ok ?
-        response.json().then(json => dispatch(addPost(json)))
+        response.json().then(json => dispatch(receivePost(json, postContext)))
         .then(() => dispatch(createPostSuccess()))
         .then(() => dispatch(clearPostErrors()))
         :

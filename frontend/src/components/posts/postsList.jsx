@@ -11,16 +11,13 @@ import Loading from "../loading";
 class PostList extends React.Component {
   componentWillMount() {
     const {fetchPosts, params} = this.props;
-    console.log("component mount fetch");
     fetchPosts(params);
   }
 
   componentWillReceiveProps(newProps) {
     const {params: oldParams} = this.props;
     const {params: newParams} = newProps;
-    console.log(oldParams, newParams);
     if (isDifferentFetchParams(oldParams, newParams)) {
-      console.log("new param fetch");
       this.props.fetchPosts(newParams);
     }
   }

@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import {connect} from "react-redux";
 
 import {
+  getCreatePostData,
   changePostModalBody,
   createPost,
   openPostModal,
@@ -35,45 +36,66 @@ const customStyles = {
   },
 };
 
-const TweetButton = ({
-  body,
-  isLoggedIn,
-  isOpen,
-  changePostModalBody,
-  createPost,
-  closePostModal,
-  openPostModal,
-}) => {
-  return isLoggedIn ?
-  (
-    <div>
-      <button className="btn btn-primary"
-        onClick={openPostModal}>
-        Tweet
-      </button>
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={closePostModal}
-        style={customStyles}
-        contentLabel="Tweet"
-      >
+class TweetButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-        <h2>Compose New Tweet</h2>
-        <form onSubmit={e => {e.preventDefault(); return createPost(body);}}>
-          <div className="form-group">
-            <textarea className="form-control"
-              value={body}
-              onChange={e => changePostModalBody(e.target.value)}
-              rows="3"></textarea>
-          </div>
-          <button type="submit" className="btn btn-primary">Tweet</button>
-        </form>
-      </Modal>
-    </div>
-  )
-  :
-  null;
-};
+  handleChange(e) {
+    e.preventDefault();
+    const {changePostModalBody} = this.props;
+    changePostModalBody(e.target.value);
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const {body, createPost, replyTo, postContext} = this.props;
+    e.preventDefault();
+    createPost(getCreatePostData(body, replyTo), postContext);
+  }
+
+  render() {
+    const {
+      body,
+      isLoggedIn,
+      isOpen,
+      closePostModal,
+      openPostModal,
+    } = this.props;
+
+    return isLoggedIn ?
+    (
+      <div>
+        <button className="btn btn-primary"
+          onClick={openPostModal}>
+          Tweet
+        </button>
+        <Modal
+          isOpen={isOpen}
+          onRequestClose={closePostModal}
+          style={customStyles}
+          contentLabel="Tweet"
+        >
+
+          <h2>Compose New Tweet</h2>
+          <form onSubmit={this.handleSubmit}>
+            <div className="form-group">
+              <textarea className="form-control"
+                value={body}
+                onChange={this.handleChange}
+                rows="3"></textarea>
+            </div>
+            <button type="submit" className="btn btn-primary">Tweet</button>
+          </form>
+        </Modal>
+      </div>
+    )
+    :
+    null;
+  }
+}
 
 const mapStateToProps = state => (
   {
@@ -85,7 +107,7 @@ const mapStateToProps = state => (
 
 const mapDispatchToProsp = dispatch => (
   {
-    createPost: body => dispatch(createPost(body)),
+    createPost: (data, postContext) => dispatch(createPost(data, postContext)),
     changePostModalBody: body => dispatch(changePostModalBody(body)),
     openPostModal: () => dispatch(openPostModal()),
     closePostModal: () => dispatch(closePostModal()),

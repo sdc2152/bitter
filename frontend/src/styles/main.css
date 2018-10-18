@@ -68,6 +68,17 @@
   min-width: 590px;
 }
 
+/*Post Item*/
+.post-item-dd {
+  z-index: 1000;
+}
+
+/*Post Detail*/
+.post-detail-button:hover {
+  background-color: #E8F5FD;
+  cursor: pointer;
+}
+
 /*Loaing*/
 .lds-ring {
   display: inline-block;

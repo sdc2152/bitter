@@ -139,6 +139,10 @@ class PostListCreateView(generics.ListCreateAPIView):
         queryset = Post.objects.all()
         params = self.request.query_params
 
+        replies_to = params.get("REPLIES_TO", None)
+        if replies_to:
+            queryset = queryset.filter(parent=replies_to)
+
         user_slug = params.get("USER_SLUG", None)
         if user_slug:
             queryset = queryset.filter(user__profile__slug=user_slug)

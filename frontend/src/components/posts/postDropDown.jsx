@@ -4,23 +4,30 @@ import {connect} from "react-redux";
 import {getCurrentUserId, isLoggedIn} from "../../reducers/selectors";
 import {deletePost} from "../../actions/postsActions";
 
-const PostDropDown = ({post, currentUserId, deletePost, isLoggedIn}) => {
-  const dropDownMenu = currentUserId === post.user.id ?
-  (
-    <button className="dropdown-item" onClick={() => deletePost(post.id)}>
+const UserOwnedPostDropDown = ({deletePost, post}) => (
+  <button className="dropdown-item"
+    onClick={e => {e.stopPropagation(); return deletePost(post.id);}}>
       Delete
     </button>
-  )
-  :
-  (
+);
+
+const UserUnownedPostDropDown = () => (
     <button className="dropdown-item">
       not implemented
     </button>
-  );
+);
+
+const PostDropDown = ({post, currentUserId, deletePost, isLoggedIn}) => {
+  const dropDownMenu = currentUserId === post.user.id ?
+    <UserOwnedPostDropDown deletePost={deletePost} post={post}/>
+    :
+    <UserUnownedPostDropDown />;
+
   return isLoggedIn ?
   (
     <div className="dropdown">
-      <button className="btn dropdown-toggle btn-sm bg-white text-secondary"
+      <button className="btn dropdown-toggle btn-sm bg-transparent
+        text-secondary" onClick={e => e.stopPropagation()}
         type="button" id="dropdownMenuButton" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
       </button>

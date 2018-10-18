@@ -1,8 +1,10 @@
 import {combineReducers} from "redux";
-import {normalizeArray} from "../apiUtils";
+import {normalizeArray, normalizeEntry} from "../apiUtils";
 import {
-  ADD_POST, REMOVE_POST,
+  POST_CONTEXT,
+  REMOVE_POST,
   RECEIVE_POSTS,
+  RECEIVE_POST,
   IS_FETCHING_POSTS,
   CLEAR_POSTS,
   CHANGE_POST_BODY,
@@ -18,16 +20,14 @@ import {
 const postIds = (state=[], action) => {
   Object.freeze(state);
   switch(action.type) {
-    case ADD_POST:
-      return [action.post.id, ...state];
+    case RECEIVE_POST:
+      if (action.postContext === POST_CONTEXT.HOME_PAGE) {
+        return [action.post.id, ...state];
+      }
+      return state;
     case REMOVE_POST:
       return state.filter(i => i !== action.postId);
     case RECEIVE_POSTS:
-      // TODO: the problem here is that clicking links without reloading page
-      //       will keep adding posts to the post state. there needs to be a
-      //       add new posts and a fetch original posts or something
-      //       ADD_POSTS and ADD_POST for adding to the state and RECEIVE for
-      //       replacing
       return action.posts.map(post => post.id);
     case CLEAR_POSTS:
       return [];
@@ -39,13 +39,16 @@ const postIds = (state=[], action) => {
 const byIds = (state={}, action) => {
   Object.freeze(state);
   switch(action.type) {
-    case ADD_POST:
-      return Object.assign({}, state, {[action.post.id]: action.post});
     case REMOVE_POST: {
       let newState = Object.assign({}, state);
       delete newState[action.postId];
       return newState;
     }
+    case RECEIVE_POST:
+      if (action.postContext === POST_CONTEXT.HOME_PAGE) {
+        return Object.assign({}, state, normalizeEntry(action.post, "id"));
+      }
+      return state;
     case RECEIVE_POSTS: {
       return normalizeArray(action.posts, "id");
     }
@@ -74,7 +77,7 @@ const isFetching = (state=false, action) => {
   switch(action.type) {
     case RECEIVE_POST_ERRORS:
     case RECEIVE_POSTS_ERRORS:
-    case ADD_POST:
+    case RECEIVE_POST:
     case RECEIVE_POSTS:
       return false;
     case IS_FETCHING_POSTS:

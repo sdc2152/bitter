@@ -120,16 +120,20 @@ class UserDetailSerializer(serializers.ModelSerializer):
         profile.save()
         return instance
 
+
 class PostSerializer(serializers.ModelSerializer):
     # TODO: require login
     # TODO: require ownership for update destroy
+    # TODO: make this abstract??
+
     class Meta:
         model = Post
-        fields = ("id", "body", "created", "user", )
+        fields = ("id", "body", "created", "user", "parent", )
         read_only_fields = ("id", "user", "created")
 
 
 class PostCreateSerializer(PostSerializer):
+    user = None
 
     def create(self, validated_data):
         user = self.context["request"].user
@@ -140,4 +144,5 @@ class PostCreateSerializer(PostSerializer):
 
 
 class PostDetailSerializer(PostSerializer):
+    # TODO: make a User serializer that returns only data needed for posts
     user = UserDetailSerializer()

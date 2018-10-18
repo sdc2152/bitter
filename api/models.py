@@ -28,11 +28,20 @@ class Tag(DateTimeModel):
 
 
 # TODO: tags - save method --- or --- signal???
-# # TODO: how to calculate a large number of followers ? cache ??
+# TODO: how to calculate a large number of followers ? cache ??
+# TODO: add custom queryset to return feeds and handle params now handled in
+#       view
 class Post(DateTimeModel):
     body = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        related_name="replies",
+        blank=True,
+        null=True,
+    )
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

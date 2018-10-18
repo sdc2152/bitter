@@ -4,7 +4,13 @@ import {Link} from "react-router-dom";
 import AuthStatus from "./auth/authStatus";
 import TweetButton from "./tweetButton";
 
-const NavBar = () => {
+import {POST_CONTEXT} from "../actions/postsActions";
+
+const NavBar = ({location}) => {
+  let postContext;
+  if (location.pathname === "/") {
+    postContext = POST_CONTEXT.HOME_PAGE;
+  }
   return (
     <nav className="navbar fixed-top navbar-light bg-white shadow-sm">
         <div className="d-flex flex-row bd-highlight mb-3">
@@ -13,7 +19,7 @@ const NavBar = () => {
 
         <div className="d-flex bd-highlight">
           <AuthStatus />
-          <TweetButton />
+          <TweetButton postContext={postContext}/>
         </div>
     </nav>
   );
