@@ -1,14 +1,18 @@
 import {combineReducers} from "redux";
 import auth from "./authReducer";
-import user from "./userReducer";
+import displayUser from "./displayUserReducer";
+import profileForm from "./profileFormReducer";
 import posts from "./postsReducer";
 import postDetail from "./postDetailReducer";
+import image from "./imageReducer";
 
 const rootReducer = combineReducers({
-  auth: auth,
-  displayUser: user,
-  posts: posts,
-  postDetail: postDetail,
+  auth,
+  displayUser,
+  profileForm,
+  posts,
+  postDetail,
+  image,
 });
 
 export default rootReducer;

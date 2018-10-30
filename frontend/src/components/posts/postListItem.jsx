@@ -14,7 +14,7 @@ const PostListItem = ({post}) => {
       <PostDetail postId={id}>
         <div className="p-4">
           <div className="d-flex justify-content-between">
-            <div>
+            <div onClick={e => e.stopPropagation()}>
               <Link to={`/${slug}`}>
                 {username}@{slug}
               </Link>

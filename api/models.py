@@ -14,13 +14,27 @@ class DateTimeModel(models.Model):
 class Profile(DateTimeModel):
     slug = models.SlugField(max_length=200, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    description = models.CharField(max_length=200, default="", blank=True)
     follows = models.ManyToManyField(
         "self",
         related_name="followers",
         symmetrical=False,
         blank=True
     )
-    description = models.CharField(max_length=200, default="")
+    avatar = models.OneToOneField(
+        "image.Image",
+        on_delete=models.CASCADE,
+        related_name="avatar_profile",
+        blank=True,
+        null=True
+    )
+    banner = models.OneToOneField(
+        "image.Image",
+        on_delete=models.CASCADE,
+        related_name="banner_profile",
+        blank=True,
+        null=True
+    )
 
 
 class Tag(DateTimeModel):

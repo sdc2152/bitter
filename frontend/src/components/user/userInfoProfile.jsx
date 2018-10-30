@@ -2,7 +2,7 @@ import React from "react";
 import FollowButton from "../follows/followButton";
 
 const UserInfoProfile = ({user}) => {
-  const {id, username, profile, first_name, last_name, email} = user;
+  const {id, username, profile} = user;
   const {description, slug} = profile;
   return (
     <div className="pt-5 user-info-width">
@@ -15,15 +15,6 @@ const UserInfoProfile = ({user}) => {
         </div>
         <div>
           {description}
-        </div>
-        <div>
-          {first_name}
-        </div>
-        <div>
-          {last_name}
-        </div>
-        <div>
-          {email}
         </div>
         <FollowButton userId={id} />
       </div>

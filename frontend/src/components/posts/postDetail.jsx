@@ -18,7 +18,6 @@ import {POST_CONTEXT} from "../../actions/postsActions";
 
 import {
   isPostDetailFound,
-  getIsFetchingReplies,
   getReplies,
   getPostDetail
 } from "../../reducers/selectors";
@@ -83,7 +82,6 @@ class PostDetail extends React.Component {
     const {
       children,
       isPostDetailFound,
-      isFetchingReplies,
       postDetail,
       replies,
     } = this.props;
@@ -116,7 +114,6 @@ class PostDetail extends React.Component {
 
 const mapStateToProps = state => ({
   isPostDetailFound: isPostDetailFound(state),
-  isFetchingReplies: getIsFetchingReplies(state),
   postDetail: getPostDetail(state),
   replies: getReplies(state),
 });

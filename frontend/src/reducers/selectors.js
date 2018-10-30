@@ -14,6 +14,9 @@ export const getCurrentUserFollows = ({auth}) => (
   auth.user.profile ? auth.user.profile.follows : undefined
 );
 
+// Profile Form selectors
+export const getProfileFormFields = ({profileForm}) => profileForm.fields;
+
 // User selectors
 export const isDisplayUserFound = ({displayUser}) => (
   displayUser.user.username !== undefined
@@ -44,3 +47,8 @@ export const getIsFetchingReplies = ({postDetail}) => (
 export const getReplies = ({postDetail}) => (
   postDetail.replies.replyIds.map(id => postDetail.replies.byIds[id])
 );
+
+// Image selectors
+export const getImageFormFile = ({image}) => image.formModal.file;
+export const getIsImageModalOpen = ({image}) => image.formModal.isOpen;
+export const getImageErrors = ({image}) => image.errors;

@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 
-import {createFollow, deleteFollow} from "../../actions/userActions";
+import {createFollow, deleteFollow} from "../../actions/displayUserActions";
 import {
   isLoggedIn,
   getCurrentUserFollows,

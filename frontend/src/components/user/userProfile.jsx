@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 
-import {fetchUserFromSlug} from "../../actions/userActions";
+import {fetchUserFromSlug} from "../../actions/displayUserActions";
 import {getProfilePageFetchParams} from "../../actions/postsActions";
 import {
   isDisplayUserFound,

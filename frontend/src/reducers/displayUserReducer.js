@@ -2,7 +2,7 @@ import {
   RECEIVE_DISPLAY_USER,
   RECEIVE_DISPLAY_USER_ERRORS,
   IS_FETCHING_DISPLAY_USER,
-} from "../actions/userActions";
+} from "../actions/displayUserActions";
 
 const defaultState = {
   isFetching: false,
@@ -10,7 +10,7 @@ const defaultState = {
   errors: {},
 };
 
-function user(state=defaultState, action) {
+function displayUser(state=defaultState, action) {
   Object.freeze(state);
   switch(action.type) {
     case RECEIVE_DISPLAY_USER:
@@ -30,4 +30,4 @@ function user(state=defaultState, action) {
   }
 }
 
-export default user;
+export default displayUser;

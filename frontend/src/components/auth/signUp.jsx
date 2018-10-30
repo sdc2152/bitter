@@ -32,9 +32,11 @@ class SignUp extends React.Component {
     this.setState({[e.target.name]: e.target.value});
   }
 
-  handleSubmit(e, username, password) {
+  handleSubmit(e) {
+    const {username, password} = this.state;
+    const {signUpUser} = this.props;
     e.preventDefault();
-    this.props.signUpUser(username, password);
+    signUpUser(username, password);
   }
 
   render() {
@@ -54,7 +56,7 @@ class SignUp extends React.Component {
                 Create your account
               </h4>
 
-              <form onSubmit={(e) => this.handleSubmit(e, username, password)}>
+              <form onSubmit={this.handleSubmit}>
                 <AuthErrors errors={nonFieldErrors} />
 
                 <div className="form-group pt-3">

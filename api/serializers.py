@@ -66,7 +66,10 @@ class LoginSerializer(serializers.Serializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ("description", "slug", "follows", "followers", )
+        fields = (
+            "description", "slug", "follows", "followers", "avatar",
+            "banner",
+        )
         extra_kwargs = {"slug": {"validators": []}, }
 
 

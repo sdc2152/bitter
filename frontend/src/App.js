@@ -15,6 +15,7 @@ import Home from "./components/home";
 import Login from "./components/auth/login";
 import SignUp from "./components/auth/signUp";
 import UserProfile from "./components/user/userProfile";
+import UserUpdateProfile from "./components/user/userUpdateProfile";
 import TagDetail from "./components/tag/tagDetail";
 import NotFound from "./components/notFound";
 
@@ -36,6 +37,7 @@ class App extends Component {
             <div className="body">
               <Switch>
                 <Route exact path="/" component={Home} />
+                <Route path="/edit" component={UserUpdateProfile} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={SignUp} />
                 <Route path="/tag/:tagName" component={TagDetail}/>
