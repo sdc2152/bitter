@@ -36,7 +36,12 @@ export const clearProfileFormErrors = () => (
 
 // Flatten and nest data for field representation and sending
 export const getProfileDataFromUser = ({profile}) => (
-  (({slug, description}) => ({slug, description}))(profile)
+  (({slug, description}) => (
+    {
+      slug,
+      description,
+    }
+  ))(profile)
 );
 export const getUserDataFromUser = ({
   username,
@@ -52,36 +57,22 @@ export const getUserDataFromUser = ({
   }
 );
 
-const formDataToUser = ({
-  username,
-  email,
-  first_name,
-  last_name,
-  slug,
-  description,
-}) => (
-  {
-    username,
-    email,
-    first_name,
-    last_name,
-    profile: {
-      slug,
-      description,
-    }
+const formDataFromFields = fields => {
+  let data = new FormData();
+  for (const field in fields) {
+    data.append(field, fields[field]);
   }
-);
+  return data;
+};
 
-
-export const updateUser = (data, id) => (
-  dispatch => {
+export const updateUser = (fields, id) => {
+  return dispatch => {
+    // TODO: find out how to send files nested
     return fetch(`/api/users/${id}/`, {
       method: "PATCH",
       credentials: "same-origin",
-      body: JSON.stringify(formDataToUser(data)),
+      body: formDataFromFields(fields),
       headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
         "X-CSRFToken": getCSRFToken()
       }
     })
@@ -92,5 +83,5 @@ export const updateUser = (data, id) => (
         :
         response.json().then(json => dispatch(receiveProfileFormErrors(json)))
       ));
-  }
-);
+  };
+};

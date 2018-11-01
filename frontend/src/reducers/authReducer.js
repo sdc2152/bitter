@@ -15,6 +15,7 @@ function auth(state=defaultAuthState, action) {
   Object.freeze(state);
   switch(action.type) {
     case RECEIVE_USER:
+      console.log(action.user.profile);
       return Object.assign({}, state, {
         initialLoginCheckComplete: true,
         user: action.user,

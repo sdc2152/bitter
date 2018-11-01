@@ -9,9 +9,9 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
 
-from .models import Post, Profile, Tag
-from .permissions import IsOwnerOrReadOnly
-from .serializers import (
+from api.models import Post, Profile
+from api.permissions import IsOwnerOrReadOnly
+from api.serializers import (
     UserDetailSerializer,
     SignUpSerializer,
     LoginSerializer,

@@ -1,14 +1,16 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import AvatarView from "../image/avatarView";
 
 const LoggedInDisplay = ({currentUser, logoutUser}) => {
-  const {username} = currentUser;
+  const {profile} = currentUser;
+  const {avatar} = profile;
   return (
-    <div className="dropdown">
-      <button className="btn dropdown-toggle"
+    <div className="dropdown px-3">
+      <button className="btn p-0 rounded-circle bg-transparent"
         type="button" id="dropdownMenuButton" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        {username}
+        <AvatarView className="avatar-small rounded-circle" avatar={avatar}/>
       </button>
       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <Link className="dropdown-item" to="/edit">

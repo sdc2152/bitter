@@ -17,6 +17,7 @@ import {
 class UserUpdateProfile extends React.Component {
   constructor(props) {
     super(props);
+    this.handleProfileFileChange = this.handleProfileFileChange.bind(this);
     this.handleProfileFieldChange = this.handleProfileFieldChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -24,6 +25,12 @@ class UserUpdateProfile extends React.Component {
   componentWillMount() {
     const {currentUser, setInitialProfileForm, isLoggedIn} = this.props;
     isLoggedIn && setInitialProfileForm(currentUser);
+  }
+
+  handleProfileFileChange(e) {
+    const {changeProfileField} = this.props;
+    e.preventDefault();
+    changeProfileField({[e.target.name]: e.target.files[0]});
   }
 
   handleProfileFieldChange(e) {
@@ -54,14 +61,26 @@ class UserUpdateProfile extends React.Component {
       <div className="position-fixed w-100">
         <div className="bg-white h-100">
 
-          <div className="p-5 w-50 m-auto">
+          <div className="p-5 center-update m-auto">
             <h4>
               Edit profile information
             </h4>
             <form onSubmit={this.handleSubmit}>
 
               <div className="form-group">
-                <label for="usernameInput">Username</label>
+                <input type="file" className="form-control-file" name="avatar"
+                  onChange={this.handleProfileFileChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <input type="file" className="form-control-file" name="banner"
+                  onChange={this.handleProfileFileChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="usernameInput">Username</label>
                 <input className="form-control" type="text"
                   placeholder="username" name="username"
                   value={username} id="usernameInput"
@@ -81,7 +100,7 @@ class UserUpdateProfile extends React.Component {
               </div>
 
               <div className="form-group">
-                <label for="emailInput">Email</label>
+                <label htmlFor="emailInput">Email</label>
                 <input className="form-control" type="text"
                   placeholder="email" name="email"
                   value={email} id="emailInput"
@@ -90,7 +109,7 @@ class UserUpdateProfile extends React.Component {
               </div>
 
               <div className="form-group">
-                <label for="first_nameInput">First name</label>
+                <label htmlFor="first_nameInput">First name</label>
                 <input className="form-control" type="text"
                   placeholder="first name" name="first_name"
                   value={first_name} id="first_nameInput"
@@ -99,7 +118,7 @@ class UserUpdateProfile extends React.Component {
               </div>
 
               <div className="form-group">
-                <label for="last_nameInput">Last name</label>
+                <label htmlFor="last_nameInput">Last name</label>
                 <input className="form-control" type="text"
                   placeholder="last name" name="last_name"
                   value={last_name} id="last_nameInput"
@@ -108,7 +127,7 @@ class UserUpdateProfile extends React.Component {
               </div>
 
               <div className="form-group">
-                <label for="descriptionInput">Description</label>
+                <label htmlFor="descriptionInput">Description</label>
                 <input className="form-control" type="text"
                   placeholder="description" name="description"
                   value={description} id="descriptionInput"

@@ -17,11 +17,6 @@ const NavBar = ({location}) => {
         <div className="d-flex flex-row bd-highlight mb-3">
           <Link className="nav-link" to="/">Home</Link>
         </div>
-
-        <div>
-          <ImageFormModal />
-        </div>
-
         <div className="d-flex bd-highlight">
           <AuthStatus />
           <TweetButton postContext={postContext}/>

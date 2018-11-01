@@ -10,6 +10,8 @@ import {
 } from "../actions/profileFormActions";
 
 const defaultState = {
+  avatar: null,
+  banner: null,
   username: "",
   email: "",
   first_name: "",

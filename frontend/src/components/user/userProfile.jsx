@@ -14,6 +14,8 @@ import UserNotFound from "./userNotFound";
 import UserInfoProfile from "./userInfoProfile";
 import PostList from "../posts/postsList";
 import Loading from "../loading";
+import AvatarView from "../image/avatarView";
+import BannerView from "../image/bannerView";
 
 class UserProfile extends React.Component {
   componentWillMount() {
@@ -36,6 +38,15 @@ class UserProfile extends React.Component {
       displayUser,
       match,
     } = this.props;
+
+    const avatar = displayUser &&
+      displayUser.profile &&
+      displayUser.profile.avatar;
+
+    const banner = displayUser &&
+      displayUser.profile &&
+      displayUser.profile.banner;
+
     const {params} = match;
     return (
       isFetchingDisplayUser ?
@@ -45,16 +56,19 @@ class UserProfile extends React.Component {
       (
         <div>
           <div className="profile-header">
-            <div className="profile-header-top bg-primary">
-
+            <BannerView banner={banner}
+              className="profile-header-top bg-primary"
+            >
               <div className="app-container h-100 position-relative mx-auto">
                 <div className="profile-header-pic">
                   <div className="profile-pic bg-white rounded-circle">
+                    <AvatarView avatar={avatar}
+                      className="avatar-large rounded-circle p-1"/>
                   </div>
                 </div>
               </div>
 
-            </div>
+            </BannerView>
 
               <div className="profile-header-bottom bg-white">
                 <div className="nav app-container mx-auto">

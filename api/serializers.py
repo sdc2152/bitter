@@ -4,7 +4,10 @@ from django.utils.text import slugify
 from rest_framework import serializers, exceptions
 from random import random
 
-from .models import Profile, Post, Tag
+from api.models import Profile, Post
+
+from image.serializers import ImageSerializer
+from image.models import Image
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -64,6 +67,9 @@ class LoginSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    avatar = ImageSerializer()
+    banner = ImageSerializer()
+
     class Meta:
         model = Profile
         fields = (
@@ -84,6 +90,30 @@ class UserDetailSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ("id", "is_authenticated", )
 
+    def to_internal_value(self, data):
+        """
+        nest flattened data in request
+        """
+        user_fields = [f.name for f in User._meta.get_fields()]
+        user_data = {field: data[field] for field in data
+                     if field in user_fields}
+
+        profile_fields = [f.name for f in Profile._meta.get_fields()]
+        profile_data = {field: data[field] for field in data
+                        if field in profile_fields and data[field] != "null"}
+
+        avatar = profile_data.get("avatar", None)
+        if avatar is not None:
+            profile_data["avatar"] = {"image": profile_data["avatar"]}
+
+        banner = profile_data.get("banner", None)
+        if banner is not None:
+            profile_data["banner"] = {"image": profile_data["banner"]}
+
+        user_data["profile"] = profile_data
+
+        return user_data
+
     def validate_profile(self, data):
         """
         ensure that slug is unique but allow user to repost slug
@@ -95,13 +125,13 @@ class UserDetailSerializer(serializers.ModelSerializer):
                 raise exceptions.ValidationError("@ address must be unique.")
         return data
 
-
     # TODO: require that user be logged in to update
     def update(self, instance, validated_data):
         """
         handle updates for nested relationship Profile
         """
         # user update
+
         instance.username = validated_data.get("username", instance.username)
         instance.email = validated_data.get("email", instance.email)
         instance.first_name = validated_data.get(
@@ -110,17 +140,36 @@ class UserDetailSerializer(serializers.ModelSerializer):
         instance.last_name = validated_data.get(
             "last_name", instance.last_name
         )
-        instance.save()
 
         # profile update
-        pro_data = validated_data.get("profile")
-        profile = instance.profile
-        profile.follows.set(pro_data.get("follows", profile.follows.all()))
-        profile.slug = slugify(pro_data.get("slug", profile.slug))
-        profile.description = pro_data.get(
-            "description", profile.description
-        )
-        profile.save()
+        pro_data = validated_data.get("profile", None)
+        if pro_data is not None:
+            profile = instance.profile
+            profile.slug = slugify(pro_data.get("slug", profile.slug))
+            profile.description = pro_data.get(
+                "description", profile.description
+            )
+
+            avatar = pro_data.get("avatar", None)
+            if avatar is not None:
+                image = ImageSerializer(data=avatar)
+                image.is_valid(raise_exception=True)
+                if profile.avatar is not None:
+                    profile.avatar.delete()
+                profile.avatar = image.save()
+
+            banner = pro_data.get("banner", None)
+            if banner is not None:
+                image = ImageSerializer(data=banner)
+                image.is_valid(raise_exception=True)
+                if profile.banner is not None:
+                    profile.banner.delete()
+                profile.banner = image.save()
+
+            profile.save()
+            instance.profile = profile
+
+        instance.save()
         return instance
 
 
