@@ -16,6 +16,8 @@ import PostList from "../posts/postsList";
 import Loading from "../loading";
 import AvatarView from "../image/avatarView";
 import BannerView from "../image/bannerView";
+import SuggestedFollows from "../suggestedFollows";
+import SuggestedTags from "../tag/suggestedTags";
 
 class UserProfile extends React.Component {
   componentWillMount() {
@@ -82,8 +84,10 @@ class UserProfile extends React.Component {
 
           <div className="app-container mx-auto">
             <div className="d-flex p-2 justify-content-start">
-              <div className="mr-2">
+              <div className="mr-2 user-info-width">
                 <UserInfoProfile user={displayUser} />
+                <SuggestedFollows />
+                <SuggestedTags />
               </div>
 
               <div className="ml-2 bg-white center-display rounded-bottom">

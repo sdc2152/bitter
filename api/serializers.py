@@ -4,10 +4,9 @@ from django.utils.text import slugify
 from rest_framework import serializers, exceptions
 from random import random
 
-from api.models import Profile, Post
+from api.models import Profile, Post, Tag
 
 from image.serializers import ImageSerializer
-from image.models import Image
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -173,6 +172,12 @@ class UserDetailSerializer(serializers.ModelSerializer):
         return instance
 
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = "__all__"
+
+
 class PostSerializer(serializers.ModelSerializer):
     # TODO: require login
     # TODO: require ownership for update destroy
@@ -180,8 +185,8 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ("id", "body", "created", "user", "parent", )
-        read_only_fields = ("id", "user", "created")
+        fields = ("id", "body", "created", "user", "parent", "replies", )
+        read_only_fields = ("id", "user", "created", "replies")
 
 
 class PostCreateSerializer(PostSerializer):

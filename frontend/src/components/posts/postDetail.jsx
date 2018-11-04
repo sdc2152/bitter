@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import PostForm from "./postForm";
 import PostReplyList from "./postReplyList";
 import PostDetailView from "./postDetailView";
+import Loading from "../loading";
 
 import {
   fetchPostDetail,
@@ -19,7 +20,8 @@ import {POST_CONTEXT} from "../../actions/postsActions";
 import {
   isPostDetailFound,
   getReplies,
-  getPostDetail
+  getPostDetail,
+  getIsFetchingReplies,
 } from "../../reducers/selectors";
 
 const customStyles = {
@@ -84,6 +86,7 @@ class PostDetail extends React.Component {
       isPostDetailFound,
       postDetail,
       replies,
+      isFetchingReplies,
     } = this.props;
     return (
       <div>
@@ -104,8 +107,8 @@ class PostDetail extends React.Component {
             replyTo={postDetail.id}
             postContext={POST_CONTEXT.POST_DETAIL}
           />
+          {isFetchingReplies ? <Loading/> : <PostReplyList replies={replies}/>}
 
-          <PostReplyList replies={replies} />
         </Modal>
       </div>
     );
@@ -116,6 +119,7 @@ const mapStateToProps = state => ({
   isPostDetailFound: isPostDetailFound(state),
   postDetail: getPostDetail(state),
   replies: getReplies(state),
+  isFetchingReplies: getIsFetchingReplies(state),
 });
 
 const mapDispatchToProps = dispatch => ({

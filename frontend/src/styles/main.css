@@ -41,6 +41,11 @@
   width: 37px;
 }
 
+.avatar-follows {
+  height: 50px;
+  width: 50px;
+}
+
 .avatar-medium {
   height: 70px;
   width: 70px;

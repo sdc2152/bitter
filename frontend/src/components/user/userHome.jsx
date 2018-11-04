@@ -10,13 +10,17 @@ import {
 import PostList from "../posts/postsList";
 import PostForm from "../posts/postForm";
 import UserInfoHome from "./userInfoHome";
+import SuggestedFollows from "../suggestedFollows";
+import SuggestedTags from "../tag/suggestedTags";
 
 const UserHome = ({currentUser}) => {
   return (
     <div className="app-container mx-auto">
-      <div className="d-flex p-2 justify-content-start">
-        <div className="mr-2">
+      <div className="p-2 d-flex justify-content-start">
+        <div className="mr-2 user-info-home">
           <UserInfoHome user={currentUser} />
+          <SuggestedFollows />
+          <SuggestedTags />
         </div>
 
         <div className="ml-2 bg-white center-display rounded-bottom">

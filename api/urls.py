@@ -12,6 +12,8 @@ urlpatterns = [
 
     path("follows/", views.create_destroy_follow),
 
+    path("tags/", views.TagListView.as_view()),
+
     path("login_status/", views.LoginStatusView.as_view()),
     path("sign_up/", views.SignUpView.as_view()),
     path("login/", views.LoginView.as_view()),

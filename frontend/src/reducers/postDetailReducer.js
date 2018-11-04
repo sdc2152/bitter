@@ -14,6 +14,7 @@ import {
   IS_FETCHING_REPLIES,
 } from "../actions/postDetailActions";
 
+
 // Post Detail -----------------
 const post = (state={}, action) => {
   Object.freeze(state);
@@ -42,7 +43,6 @@ const isFetching = (state=false, action) => {
 
 // Replies -----------------
 const isFetchingReplies = (state=false, action) => {
-  Object.freeze(state);
   switch(action.type) {
     case RECEIVE_REPLIES_ERRORS:
     case RECEIVE_REPLIES:
@@ -54,22 +54,22 @@ const isFetchingReplies = (state=false, action) => {
   }
 };
 
-const replyIds = (state=[], action) => {
-  Object.freeze(state);
-  switch(action.type) {
-    case RECEIVE_POST:
-      if (action.postContext === POST_CONTEXT.POST_DETAIL) {
-        return [action.post.id, ...state];
-      }
-      return state;
-    case RECEIVE_REPLIES:
-      return action.replies.map(reply => reply.id);
-    case CLEAR_REPLIES:
-      return [];
-    default:
-      return state;
-  }
-};
+//const replyIds = (state=[], action) => {
+  //Object.freeze(state);
+  //switch(action.type) {
+    //case RECEIVE_POST:
+      //if (action.postContext === POST_CONTEXT.POST_DETAIL) {
+        //return [action.post.id, ...state];
+      //}
+      //return state;
+    //case RECEIVE_REPLIES:
+      //return action.replies.map(reply => reply.id);
+    //case CLEAR_REPLIES:
+      //return [];
+    //default:
+      //return state;
+  //}
+//};
 
 const byIds = (state={}, action) => {
   Object.freeze(state);
@@ -91,7 +91,7 @@ const byIds = (state={}, action) => {
 
 const replies = combineReducers({
   byIds,
-  replyIds,
+  //replyIds,
   isFetchingReplies,
 });
 

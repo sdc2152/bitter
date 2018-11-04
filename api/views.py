@@ -1,6 +1,7 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.db.models import Q, Count
 
 from rest_framework import generics, status, exceptions
 from rest_framework.response import Response
@@ -9,14 +10,15 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
 
-from api.models import Post, Profile
+from api.models import Post, Profile, Tag
 from api.permissions import IsOwnerOrReadOnly
 from api.serializers import (
     UserDetailSerializer,
     SignUpSerializer,
     LoginSerializer,
+    TagSerializer,
     PostCreateSerializer,
-    PostDetailSerializer
+    PostDetailSerializer,
 )
 
 
@@ -79,6 +81,14 @@ class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
+    def get(self, request):
+        queryset = self.get_queryset()
+        queryset = queryset.exclude(id=request.user.id)
+        queryset = queryset.exclude(id__in=request.user.profile.follows.all())
+        queryset = queryset.order_by("profile__followers")[:5]
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
@@ -129,6 +139,17 @@ def create_destroy_follow(request):
     return Response(data=response_serializer.data, status=return_status)
 
 
+class TagListView(generics.ListAPIView):
+    serializer_class = TagSerializer
+
+    def get_queryset(self):
+        queryset = Tag.objects.all()
+        queryset = queryset.annotate(
+            count=Count("posts")
+        ).order_by("-count")[:5]
+        return queryset
+
+
 class PostListCreateView(generics.ListCreateAPIView):
     # TODO: require login
     serializer_class = PostDetailSerializer
@@ -143,6 +164,13 @@ class PostListCreateView(generics.ListCreateAPIView):
         queryset = Post.objects.all()
         params = self.request.query_params
 
+        page_type = params.get("type", None)
+        if page_type == "HOME_PAGE":
+            queryset = queryset.filter(
+                Q(user__id=self.request.user.id) |
+                Q(user__id__in=self.request.user.profile.follows.all())
+            )
+
         replies_to = params.get("REPLIES_TO", None)
         if replies_to:
             queryset = queryset.filter(parent=replies_to)
@@ -150,10 +178,6 @@ class PostListCreateView(generics.ListCreateAPIView):
         user_slug = params.get("USER_SLUG", None)
         if user_slug:
             queryset = queryset.filter(user__profile__slug=user_slug)
-
-        user_id = params.get("USER_ID", None)
-        if user_id:
-            queryset = queryset.filter(user__id=user_id)
 
         tag_name = params.get("TAG_NAME", None)
         if tag_name:

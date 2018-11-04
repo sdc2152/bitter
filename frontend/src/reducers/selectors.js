@@ -44,8 +44,36 @@ export const getPostDetail = ({postDetail}) => postDetail.post;
 export const getIsFetchingReplies = ({postDetail}) => (
   postDetail.replies.isFetchingReplies
 );
-export const getReplies = ({postDetail}) => (
-  postDetail.replies.replyIds.map(id => postDetail.replies.byIds[id])
+export const getReplies = ({postDetail}) => {
+  const replies = postDetail.post["replies"] || [];
+  return replies.reduce((acum, replyId) => {
+    const reply = postDetail.replies.byIds[replyId];
+    reply && acum.push(reply);
+    return acum;
+  }, []);
+};
+export const getRepliesByPost = ({postDetail}, {replies}) => {
+  return replies.reduce((acum, replyId) => {
+    const reply = replies[replyId];
+    reply && acum.push(reply);
+    return acum;
+  }, []);
+};
+
+// Suggested Follows selectors
+export const getSuggestedFollows = ({suggestedFollows}) => (
+  suggestedFollows.userIds.map(id => suggestedFollows.byIds[id])
+);
+export const getIsFetchingSuggestedFollows = ({suggestedFollows}) => (
+  suggestedFollows.isFetching
+);
+
+// Suggested Tags selectors
+export const getSuggestedTags = ({suggestedTags}) => (
+  suggestedTags.tagIds.map(id => suggestedTags.byIds[id])
+);
+export const getIsFetchingSuggestedTags = ({suggestedTags}) => (
+  suggestedTags.isFetching
 );
 
 // Image selectors
