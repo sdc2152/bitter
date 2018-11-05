@@ -8,6 +8,9 @@ export const getPasswordErrors = ({auth}) => auth.errors.password;
 export const getNonFieldErrors = ({auth}) => auth.errors.non_field_errors;
 
 // Current User selectors
+export const getCurrentUserAvatar = ({auth}) => (
+  auth.user && auth.user.profile && auth.user.profile.avatar
+);
 export const getCurrentUser = ({auth}) => auth.user;
 export const getCurrentUserId = ({auth}) => auth.user.id;
 export const getCurrentUserFollows = ({auth}) => (

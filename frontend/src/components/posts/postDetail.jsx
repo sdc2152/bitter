@@ -27,14 +27,12 @@ import {
 const customStyles = {
   content : {
     position: "absolute",
-    width: "642px",
     borderRadius: "10px",
-    top: "50%",
     left: "50%",
     right: "auto",
     bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
+    padding: 0,
+    transform: "translate(-50%, 0%)",
   },
   overlay: {
     position: "fixed",
@@ -108,7 +106,6 @@ class PostDetail extends React.Component {
             postContext={POST_CONTEXT.POST_DETAIL}
           />
           {isFetchingReplies ? <Loading/> : <PostReplyList replies={replies}/>}
-
         </Modal>
       </div>
     );

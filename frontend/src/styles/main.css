@@ -36,12 +36,12 @@
   height: 175px;
 }
 
-.avatar-small {
+.avatar-xs {
   height: 37px;
   width: 37px;
 }
 
-.avatar-follows {
+.avatar-sm {
   height: 50px;
   width: 50px;
 }

@@ -6,7 +6,12 @@ import {
   getCreatePostData,
 } from "../../actions/postsActions";
 
-import {getPostFormBody} from "../../reducers/selectors";
+import {
+  getPostFormBody,
+  getCurrentUserAvatar,
+} from "../../reducers/selectors";
+
+import AvatarView from "../image/avatarView";
 
 class PostForm extends React.Component {
   constructor(props) {
@@ -28,12 +33,18 @@ class PostForm extends React.Component {
   }
 
   render() {
-    const {body} = this.props;
+    const {body, avatar} = this.props;
     return (
-      <div className="px-4 py-2 bg-primary-light d-flex">
+      <div className="p-3 bg-primary-light d-flex">
+
+        <div className="pr-3">
+          <AvatarView avatar={avatar} className="avatar-xs rounded-circle" />
+        </div>
+
         <form className="flex-fill"
           onSubmit={this.handleSubmit}>
-          <input className="p-1 border-0 rounded w-100" type="text" value={body}
+          <input className="p-1 border-0 rounded w-100" type="text"
+            value={body}
             placeholder="What's on your mind?" name="body"
             onChange={this.handleChange}
           />
@@ -53,6 +64,7 @@ const mapDispatchToProps = dispatch => (
 const mapStateToProp = state => (
   {
     body: getPostFormBody(state),
+    avatar: getCurrentUserAvatar(state),
   }
 );
 

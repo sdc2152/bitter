@@ -12,7 +12,7 @@ const SuggestedFollowsListItem = ({user}) => {
       <div className="d-flex align-items-center">
 
         <div>
-          <AvatarView className="avatar-follows rounded-circle"
+          <AvatarView className="avatar-sm rounded-circle"
             avatar={avatar}/>
         </div>
 

@@ -1,10 +1,10 @@
 import React from "react";
 
-import ReplyListItem from "./postReplyListItem";
+import PostListItem from "./postListItem";
 
 const PostReplyList = ({replies}) => {
   const replyList = replies.map(
-    reply => <ReplyListItem key={reply.id} reply={reply} />
+    reply => <PostListItem key={reply.id} post={reply} />
   );
   return (
     <div className="post-list">
