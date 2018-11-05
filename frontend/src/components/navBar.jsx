@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 import AuthStatus from "./auth/authStatus";
-import TweetButton from "./tweetButton";
+import PostModal from "./posts/postModal";
 import ImageFormModal from "./image/imageFormModal";
 
 import {POST_CONTEXT} from "../actions/postsActions";
@@ -19,7 +19,11 @@ const NavBar = ({location}) => {
         </div>
         <div className="d-flex bd-highlight">
           <AuthStatus />
-          <TweetButton postContext={postContext}/>
+          <PostModal postContext={postContext}>
+            <button className="btn btn-primary">
+              Tweet
+            </button>
+          </PostModal>
         </div>
     </nav>
   );

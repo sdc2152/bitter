@@ -27,7 +27,6 @@ const defaultPostModal = {
 };
 
 const formModal = (state=defaultPostModal, action) => {
-  console.log(action);
   Object.freeze(state);
   switch(action.type) {
     case OPEN_IMAGE_MODAL:

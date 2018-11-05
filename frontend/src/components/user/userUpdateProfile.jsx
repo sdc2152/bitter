@@ -65,70 +65,88 @@ class UserUpdateProfile extends React.Component {
             <h4>
               Edit profile information
             </h4>
-            <form onSubmit={this.handleSubmit}>
+            <form className="container"onSubmit={this.handleSubmit}>
 
-              <div className="form-group">
-                <input type="file" className="form-control-file" name="avatar"
+              <div className="form-group row">
+                <label className="col-sm-3"
+                  htmlFor="avatarFileUpload">
+                  Avatar
+                </label>
+                <input type="file" className="col-sm-9 form-control-file"
+                  name="avatar" id="avatarFileUpload"
                   onChange={this.handleProfileFileChange}
                 />
               </div>
 
-              <div className="form-group">
-                <input type="file" className="form-control-file" name="banner"
+              <div className="form-group row">
+                <label className="col-sm-3"
+                  htmlFor="bannerFileUpload">
+                  Banner
+                </label>
+                <input type="file" className="col-sm-9 form-control-file"
+                  name="banner" id="bannerFileUpload"
                   onChange={this.handleProfileFileChange}
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="usernameInput">Username</label>
-                <input className="form-control" type="text"
+              <div className="form-group row">
+                <label className="col-sm-3" htmlFor="usernameInput">
+                  Username
+                </label>
+                <input className="form-control col-sm-9" type="text"
                   placeholder="username" name="username"
                   value={username} id="usernameInput"
                   onChange={this.handleProfileFieldChange}
                 />
               </div>
 
-              <div className="form-group">
-                <div className="input-group-prepend">
-                  <div className="input-group-text">@</div>
-                  <input className="form-control" type="text"
+              <div className="form-group row">
+                  <label className="col-sm-3" htmlForm="slugInput">@</label>
+                  <input className="form-control col-sm-9" type="text"
                     placeholder="slug" name="slug"
-                    value={slug}
+                    value={slug} id="slugInput"
                     onChange={this.handleProfileFieldChange}
                   />
-                </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="emailInput">Email</label>
-                <input className="form-control" type="text"
+              <div className="form-group row">
+                <label className="col-sm-3" htmlFor="emailInput">
+                  Email
+                </label>
+                <input className="form-control col-sm-9" type="text"
                   placeholder="email" name="email"
                   value={email} id="emailInput"
                   onChange={this.handleProfileFieldChange}
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="first_nameInput">First name</label>
-                <input className="form-control" type="text"
+              <div className="form-group row">
+                <label className="col-sm-3" htmlFor="first_nameInput">
+                  First name
+                </label>
+                <input className="form-control col-sm-9" type="text"
                   placeholder="first name" name="first_name"
                   value={first_name} id="first_nameInput"
                   onChange={this.handleProfileFieldChange}
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="last_nameInput">Last name</label>
-                <input className="form-control" type="text"
+              <div className="form-group row">
+                <label className="col-sm-3" htmlFor="last_nameInput">
+                  Last name
+                </label>
+                <input className="form-control col-sm-9" type="text"
                   placeholder="last name" name="last_name"
                   value={last_name} id="last_nameInput"
                   onChange={this.handleProfileFieldChange}
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="descriptionInput">Description</label>
-                <input className="form-control" type="text"
+              <div className="form-group row">
+                <label className="col-sm-3" htmlFor="descriptionInput">
+                  Description
+                </label>
+                <input className="form-control col-sm-9" type="text"
                   placeholder="description" name="description"
                   value={description} id="descriptionInput"
                   onChange={this.handleProfileFieldChange}

@@ -53,8 +53,6 @@ export const removePost = postId => (
 export const CHANGE_POST_BODY = "CHANGE_POST_BODY";
 export const CHANGE_POST_MODAL_BODY = "CHANGE_POST_MODAL_BODY";
 export const CREATE_POST_SUCCESS = "CREATE_POST_SUCCESS";
-export const CLOSE_POST_MODAL = "CLOSE_POST_MODAL";
-export const OPEN_POST_MODAL = "OPEN_POST_MODAL";
 
 export const changePostBody = body => (
   {
@@ -73,18 +71,6 @@ export const changePostModalBody = body => (
 export const createPostSuccess = () => (
   {
     type: CREATE_POST_SUCCESS,
-  }
-);
-
-export const openPostModal = () => (
-  {
-    type: OPEN_POST_MODAL,
-  }
-);
-
-export const closePostModal = () => (
-  {
-    type: CLOSE_POST_MODAL,
   }
 );
 

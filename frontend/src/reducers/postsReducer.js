@@ -10,14 +10,13 @@ import {
   CHANGE_POST_BODY,
   CHANGE_POST_MODAL_BODY,
   CREATE_POST_SUCCESS,
-  OPEN_POST_MODAL,
-  CLOSE_POST_MODAL,
   RECEIVE_POST_ERRORS,
   RECEIVE_POSTS_ERRORS,
   CLEAR_POST_ERRORS,
 } from "../actions/postsActions";
 
 const postIds = (state=[], action) => {
+  console.log(action);
   Object.freeze(state);
   switch(action.type) {
     case RECEIVE_POST:
@@ -104,21 +103,16 @@ const form = (state=defaultPostForm, action) => {
 };
 
 const defaultPostModal = {
-  isOpen: false,
   body: "",
 };
 
 const formModal = (state=defaultPostModal, action) => {
   Object.freeze(state);
   switch(action.type) {
-    case OPEN_POST_MODAL:
-      return Object.assign({}, state, {isOpen: true});
-    case CLOSE_POST_MODAL:
-      return Object.assign({}, state, {isOpen: false});
     case CHANGE_POST_MODAL_BODY:
       return Object.assign({}, state, {body: action.body});
     case CREATE_POST_SUCCESS:
-      return Object.assign({}, state, {body: "", isOpen: false});
+      return defaultPostModal;
     default:
       return state;
   }

@@ -5,6 +5,10 @@
   width: 100%;
 }
 
+.bring-forward {
+  z-index: 1000;
+}
+
 .center-display {
   width: 590px;
 }
@@ -64,6 +68,11 @@
   width: 70px;
 }
 
+/*Tag Page*/
+.tag-header {
+  height: 100px;
+}
+
 /*UserInfoHome*/
 .profile-header-pic {
   bottom: -87px;
@@ -117,7 +126,7 @@
   cursor: pointer;
 }
 
-/*Loaing*/
+/*Loading*/
 .lds-ring {
   display: inline-block;
   position: relative;

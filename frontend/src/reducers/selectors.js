@@ -35,7 +35,6 @@ export const getIsFetchingPosts = ({posts}) => posts.isFetching;
 export const getPosts = ({posts}) => posts.postIds.map(id => posts.byIds[id]);
 export const getPostFormBody = ({posts}) => posts.form.body;
 export const getPostModalBody = ({posts}) => posts.formModal.body;
-export const getIsPostModalOpen = ({posts}) => posts.formModal.isOpen;
 
 // Post Deatail selectors
 export const isPostDetailFound = ({postDetail}) => (

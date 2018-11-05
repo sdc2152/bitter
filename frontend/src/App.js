@@ -16,7 +16,7 @@ import Login from "./components/auth/login";
 import SignUp from "./components/auth/signUp";
 import UserProfile from "./components/user/userProfile";
 import UserUpdateProfile from "./components/user/userUpdateProfile";
-import TagDetail from "./components/tag/tagDetail";
+import TagPage from "./components/tag/tagPage";
 import NotFound from "./components/notFound";
 
 Modal.setAppElement("#root");
@@ -40,7 +40,7 @@ class App extends Component {
                 <Route path="/edit" component={UserUpdateProfile} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={SignUp} />
-                <Route path="/tag/:tagName" component={TagDetail}/>
+                <Route path="/tag/:tagName" component={TagPage}/>
                 <Route path="/:userSlug" component={UserProfile} />
                 <Route component={NotFound} />
               </Switch>

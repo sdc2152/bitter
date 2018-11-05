@@ -47,19 +47,19 @@ const customStyles = {
 };
 
 class PostDetail extends React.Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     this.state = {
       modalIsOpen: false
     };
 
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
   }
 
-  openModal() {
+  openModal(e) {
+    e.stopPropagation();
     this.setState({modalIsOpen: true});
   }
 

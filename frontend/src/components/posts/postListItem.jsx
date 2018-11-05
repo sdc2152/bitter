@@ -5,11 +5,14 @@ import PostDropDown from "./postDropDown";
 import PostBody from "./postBody";
 import PostDetail from "./postDetail";
 import AvatarView from "../image/avatarView";
+import PostModal from "./postModal";
+
+import ReplyIcon from "../../images/reply_icon.png";
 
 const stopProp = e => e.stopPropagation();
 
 const PostListItem = ({post}) => {
-  const {id, body, user, created} = post;
+  const {id, body, user, created, replies} = post;
   const {username, profile} = user;
   const {slug, avatar} = profile;
   return (
@@ -23,29 +26,40 @@ const PostListItem = ({post}) => {
           </div>
 
           <div className="ml-3 w-100">
-            <div className="d-flex justify-content-between">
-              <div onClick={stopProp}>
-                <Link to={`/${slug}`}>
-                  {username}@{slug}
-                </Link>
-                <div>
-                  {created}
+
+            <div>
+              <div className="d-flex justify-content-between">
+                <div onClick={stopProp}>
+                  <Link to={`/${slug}`}>
+                    {username}@{slug}
+                  </Link>
+                  <div>
+                    {created}
+                  </div>
+                </div>
+
+                <div className="post-item-dd">
+                  <PostDropDown className="post-item-dd" post={post} />
                 </div>
               </div>
-
-              <div className="post-item-dd">
-                <PostDropDown className="post-item-dd" post={post} />
+              <div className="p-2">
+                <PostBody>
+                  {body}
+                </PostBody>
               </div>
             </div>
 
-            <div className="p-2">
-              <PostBody>
-                {body}
-              </PostBody>
+            <div>
+              <PostModal replyTo={id}>
+                <img src={ReplyIcon} className="reply-icon" alt="" />
+                {replies.length > 0 && replies.length}
+              </PostModal>
             </div>
-          </div>
 
+          </div>
         </div>
+
+
       </PostDetail>
     </li>
   );
