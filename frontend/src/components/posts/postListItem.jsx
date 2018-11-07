@@ -11,7 +11,7 @@ import ReplyIcon from "../../images/reply_icon.png";
 
 const stopProp = e => e.stopPropagation();
 
-const PostListItem = ({post}) => {
+const PostListItem = ({post, postContext}) => {
   const {id, body, user, created, replies} = post;
   const {username, profile} = user;
   const {slug, avatar} = profile;
@@ -49,8 +49,8 @@ const PostListItem = ({post}) => {
               </div>
             </div>
 
-            <div>
-              <PostModal replyTo={id}>
+            <div className="d-inline-block">
+              <PostModal postContext={postContext} replyTo={id}>
                 <img src={ReplyIcon} className="reply-icon" alt="" />
                 {replies.length > 0 && replies.length}
               </PostModal>

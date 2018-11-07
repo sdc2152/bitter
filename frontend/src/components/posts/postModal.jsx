@@ -44,8 +44,6 @@ class PostModal extends React.Component {
     this.state = {
       isOpen: false,
     };
-    // TODO: state for each modal so all dont open or all dont
-    // TODO: post modal is opening when clicking on post form
   }
 
   handleChange(e) {

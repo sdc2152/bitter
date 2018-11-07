@@ -3,7 +3,6 @@ import {Link} from "react-router-dom";
 
 import AuthStatus from "./auth/authStatus";
 import PostModal from "./posts/postModal";
-import ImageFormModal from "./image/imageFormModal";
 
 import {POST_CONTEXT} from "../actions/postsActions";
 

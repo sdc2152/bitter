@@ -14,11 +14,45 @@ import {
   IS_FETCHING_REPLIES,
 } from "../actions/postDetailActions";
 
+const isParent = ({parent}, {id}) => parent === id;
+
+const receivePostNewStatePost = (state, action) => {
+  if (action.postContext === POST_CONTEXT.POST_DETAIL &&
+      isParent(action.post, state)) {
+    return Object.assign({}, state, {
+      replies: [action.post.id, ...state.replies],
+    });
+  }
+  return state;
+};
+
+const receivePostNewStateReplies = (state, action) => {
+  if (action.postContext === POST_CONTEXT.POST_DETAIL) {
+
+    let newState =  normalizeEntry(action.post, "id");
+    const parentPost = state[action.post.parent];
+
+    if (parentPost) {
+      const newParentPost = Object.assign({}, parentPost, {
+        replies: [action.post.id, ...parentPost.replies],
+      });
+      Object.assign(newState, normalizeEntry(newParentPost, "id"));
+    }
+    return Object.assign(
+      {},
+      state,
+      newState
+    );
+  }
+  return state;
+};
 
 // Post Detail -----------------
 const post = (state={}, action) => {
   Object.freeze(state);
   switch(action.type) {
+    case RECEIVE_POST:
+      return receivePostNewStatePost(state, action);
     case RECEIVE_POST_DETAIL:
       return action.post;
     case CLEAR_POST_DETAIL:
@@ -29,7 +63,6 @@ const post = (state={}, action) => {
 };
 
 const isFetching = (state=false, action) => {
-  Object.freeze(state);
   switch(action.type) {
     case RECEIVE_POST_DETAIL_ERRORS:
     case RECEIVE_POST_DETAIL:
@@ -54,34 +87,25 @@ const isFetchingReplies = (state=false, action) => {
   }
 };
 
-//const replyIds = (state=[], action) => {
-  //Object.freeze(state);
-  //switch(action.type) {
-    //case RECEIVE_POST:
-      //if (action.postContext === POST_CONTEXT.POST_DETAIL) {
-        //return [action.post.id, ...state];
-      //}
-      //return state;
-    //case RECEIVE_REPLIES:
-      //return action.replies.map(reply => reply.id);
-    //case CLEAR_REPLIES:
-      //return [];
-    //default:
-      //return state;
-  //}
-//};
+const fetchingRepliesForId = (state=null, action) => {
+  switch(action.type) {
+    case RECEIVE_REPLIES_ERRORS:
+    case RECEIVE_REPLIES:
+      return null;
+    case IS_FETCHING_REPLIES:
+      return action.replies_to;
+    default:
+      return state;
+  }
+};
 
 const byIds = (state={}, action) => {
   Object.freeze(state);
   switch(action.type) {
     case RECEIVE_POST:
-      if (action.postContext === POST_CONTEXT.POST_DETAIL) {
-        return Object.assign({}, state, normalizeEntry(action.post, "id"));
-      }
-      return state;
-    case RECEIVE_REPLIES: {
-      return normalizeArray(action.replies, "id");
-    }
+      return receivePostNewStateReplies(state, action);
+    case RECEIVE_REPLIES:
+      return Object.assign({}, state, normalizeArray(action.replies, "id"));
     case CLEAR_REPLIES:
       return {};
     default:
@@ -91,8 +115,8 @@ const byIds = (state={}, action) => {
 
 const replies = combineReducers({
   byIds,
-  //replyIds,
   isFetchingReplies,
+  fetchingRepliesForId,
 });
 
 export default combineReducers({

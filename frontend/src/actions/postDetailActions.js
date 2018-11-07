@@ -14,7 +14,7 @@ export const receivePostDetail = post => (
 
 export const isFetchingPostDetail = () => (
   {
-    type: IS_FETCHING_REPLIES,
+    type: IS_FETCHING_POST_DETAIL,
   }
 );
 
@@ -37,9 +37,10 @@ export const receiveReplies = replies => (
   }
 );
 
-export const isFetchingReplies = () => (
+export const isFetchingReplies = ({REPLIES_TO}) => (
   {
     type: IS_FETCHING_REPLIES,
+    replies_to: REPLIES_TO,
   }
 );
 
@@ -114,7 +115,7 @@ export const getRepliesFetchParams = postId => (
 
 export const fetchReplies = (params={}) => (
   dispatch => {
-    dispatch(isFetchingReplies());
+    dispatch(isFetchingReplies(params));
     return fetch(`/api/posts/?${getParamString(params)}`)
       .then(response => {
         if (response.ok) {

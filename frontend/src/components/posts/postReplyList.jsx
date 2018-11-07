@@ -1,10 +1,14 @@
 import React from "react";
 
-import PostListItem from "./postListItem";
+import PostReplyListItem from "./postReplyListItem";
+import {POST_CONTEXT} from "../../actions/postsActions";
 
 const PostReplyList = ({replies}) => {
   const replyList = replies.map(
-    reply => <PostListItem key={reply.id} post={reply} />
+    reply => (
+      <PostReplyListItem postContext={POST_CONTEXT.POST_DETAIL}
+        key={reply.id} post={reply} />
+    )
   );
   return (
     <div className="post-list">

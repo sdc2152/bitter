@@ -23,10 +23,10 @@ class PostList extends React.Component {
   }
 
   render() {
-    const {posts, isFetchingPosts} = this.props;
-    const postsList = posts.map(
-      post => <PostListItem key={post.id} post={post} />
-    );
+    const {posts, isFetchingPosts, postContext} = this.props;
+    const postsList = posts.map(post => (
+        <PostListItem postContext={postContext} key={post.id} post={post} />
+    ));
     return isFetchingPosts ?
       <Loading />
       :

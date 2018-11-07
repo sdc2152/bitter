@@ -25,7 +25,8 @@ const UserHome = ({currentUser}) => {
 
         <div className="ml-2 bg-white center-display rounded-bottom">
           <PostForm postContext={POST_CONTEXT.HOME_PAGE}/>
-          <PostList params={getHomePageFetchParams(currentUser)}/>
+          <PostList postContext={POST_CONTEXT.HOME_PAGE}
+            params={getHomePageFetchParams(currentUser)}/>
         </div>
 
       </div>

@@ -11,6 +11,7 @@
 
 .center-display {
   width: 590px;
+  display: inline-table;
 }
 
 .bg-primary {

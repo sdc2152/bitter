@@ -46,6 +46,10 @@ export const getPostDetail = ({postDetail}) => postDetail.post;
 export const getIsFetchingReplies = ({postDetail}) => (
   postDetail.replies.isFetchingReplies
 );
+export const getIsFetchingForPost = ({postDetail}, id) => (
+  postDetail.replies.isFetchingReplies &&
+  postDetail.replies.fetchingRepliesForId === id
+);
 export const getReplies = ({postDetail}) => {
   const replies = postDetail.post["replies"] || [];
   return replies.reduce((acum, replyId) => {
@@ -55,11 +59,12 @@ export const getReplies = ({postDetail}) => {
   }, []);
 };
 export const getRepliesByPost = ({postDetail}, {replies}) => {
-  return replies.reduce((acum, replyId) => {
-    const reply = replies[replyId];
+  const thing = replies.reduce((acum, replyId) => {
+    const reply = postDetail.replies.byIds[replyId];
     reply && acum.push(reply);
     return acum;
   }, []);
+  return thing;
 };
 
 // Suggested Follows selectors

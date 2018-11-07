@@ -21,7 +21,7 @@ import {
   isPostDetailFound,
   getReplies,
   getPostDetail,
-  getIsFetchingReplies,
+  getIsFetchingForPost,
 } from "../../reducers/selectors";
 
 const customStyles = {
@@ -64,6 +64,7 @@ class PostDetail extends React.Component {
   }
 
   afterOpenModal() {
+    // TODO: kinda hacky - should come back to this
     document.body.style.overflow = "hidden";
     const {postId, fetchReplies, fetchPostDetail} = this.props;
     fetchPostDetail(postId);
@@ -84,7 +85,7 @@ class PostDetail extends React.Component {
       isPostDetailFound,
       postDetail,
       replies,
-      isFetchingReplies,
+      isFetchingForPost,
     } = this.props;
     return (
       <div>
@@ -105,19 +106,21 @@ class PostDetail extends React.Component {
             replyTo={postDetail.id}
             postContext={POST_CONTEXT.POST_DETAIL}
           />
-          {isFetchingReplies ? <Loading/> : <PostReplyList replies={replies}/>}
+          {isFetchingForPost ? <Loading/> : <PostReplyList replies={replies}/>}
         </Modal>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  isPostDetailFound: isPostDetailFound(state),
-  postDetail: getPostDetail(state),
-  replies: getReplies(state),
-  isFetchingReplies: getIsFetchingReplies(state),
-});
+const mapStateToProps = (state, {postId}) => {
+  return {
+    isPostDetailFound: isPostDetailFound(state),
+    postDetail: getPostDetail(state),
+    replies: getReplies(state),
+    isFetchingForPost: getIsFetchingForPost(state, postId),
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   fetchPostDetail: postId => dispatch(fetchPostDetail(postId)),
