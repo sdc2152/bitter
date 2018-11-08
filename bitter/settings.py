@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # 'whitenoise.runserver_nostatic',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
     "rest_framework",
@@ -130,14 +130,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# STATICFILES_DIRS = [
-    # os.path.join(FRONTEND_DIR, 'build', 'static'),
-# ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [
+    os.path.join(FRONTEND_DIR, 'build', 'static'),
+]
 
-# # Whitenoise
+# Whitenoise
 
-# WHITENOISE_ROOT = os.path.join(FRONTEND_DIR, 'build')
+WHITENOISE_ROOT = os.path.join(FRONTEND_DIR, 'build')
 
 # REST Framework
 
