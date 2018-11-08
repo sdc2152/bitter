@@ -131,7 +131,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 print(BASE_DIR)
 print(os.listdir(BASE_DIR))
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend", "build"),
+    os.path.join(BASE_DIR, "frontend"),
 ]
 
 # Whitenoise
