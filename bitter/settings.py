@@ -130,16 +130,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend", 'build', 'static'),
-]
+# STATICFILES_DIRS = [
+    # os.path.join(BASE_DIR, "frontend", 'build', 'static'),
+# ]
 
 # Whitenoise
-
 WHITENOISE_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # REST Framework
-
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
@@ -149,6 +147,7 @@ REST_FRAMEWORK = {
     )
 }
 
+# Media
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
