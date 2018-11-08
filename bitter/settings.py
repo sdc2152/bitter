@@ -137,7 +137,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Whitenoise
 
-WHITENOISE_ROOT = os.path.join(BASE_DIR, "static")
+WHITENOISE_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # REST Framework
 
