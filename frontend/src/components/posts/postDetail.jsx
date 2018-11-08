@@ -64,8 +64,7 @@ class PostDetail extends React.Component {
   }
 
   afterOpenModal() {
-    // TODO: kinda hacky - should come back to this
-    document.body.style.overflow = "hidden";
+    //document.body.style.overflow = "hidden";
     const {postId, fetchReplies, fetchPostDetail} = this.props;
     fetchPostDetail(postId);
     fetchReplies(postId);
@@ -74,7 +73,7 @@ class PostDetail extends React.Component {
   closeModal() {
     const {clearPostDetail, clearReplies} = this.props;
     this.setState({modalIsOpen: false});
-    document.body.style.overflow = "auto";
+    //document.body.style.overflow = "auto";
     clearPostDetail();
     clearReplies();
   }
