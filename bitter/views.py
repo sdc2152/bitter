@@ -45,4 +45,4 @@ def catchall_dev(request, upstream='http://localhost:3000'):
 
 catchall_prod = TemplateView.as_view(template_name='index.html')
 
-catchall = catchall_dev if settings.DEBUG else catchall_prod
+catchall = catchall_prod

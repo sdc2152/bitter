@@ -24,7 +24,7 @@ FRONTEND_DIR = os.path.abspath(os.path.join(BASE_DIR, "frontend"))
 SECRET_KEY = '%*p##%hw3^pf7w2^axk+k+g-uo!snkcf)ttxbn9!xl@lk_$s-p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "bitter-app.herokuapp.com"
