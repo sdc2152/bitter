@@ -137,7 +137,7 @@ STATICFILES_DIRS = [
 
 # Whitenoise
 
-WHITENOISE_ROOT = os.path.join(FRONTEND_DIR, 'build')
+WHITENOISE_ROOT = os.path.join(BASE_DIR, "static")
 
 # REST Framework
 
