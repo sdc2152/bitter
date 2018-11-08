@@ -5,6 +5,7 @@ import {
   CHANGE_PROFILE_FIELD,
   RECEIVE_PROFILE_FORM_ERRORS,
   CLEAR_PROFILE_FORM_ERRORS,
+  IS_UPDATING_PROFILE,
   getProfileDataFromUser,
   getUserDataFromUser,
 } from "../actions/profileFormActions";
@@ -49,7 +50,20 @@ function errors(state={}, action) {
   }
 }
 
+function isUpdating(state=false, action) {
+  switch(action.type) {
+    case RECEIVE_PROFILE_FORM_ERRORS:
+    case CLEAR_PROFILE_FORM_ERRORS:
+      return false;
+    case IS_UPDATING_PROFILE:
+      return true;
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   fields,
   errors,
+  isUpdating,
 });

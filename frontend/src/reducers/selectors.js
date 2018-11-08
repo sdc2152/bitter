@@ -19,6 +19,7 @@ export const getCurrentUserFollows = ({auth}) => (
 
 // Profile Form selectors
 export const getProfileFormFields = ({profileForm}) => profileForm.fields;
+export const getIsUpdatingProfile = ({profileForm}) => profileForm.isUpdating;
 
 // User selectors
 export const isDisplayUserFound = ({displayUser}) => (

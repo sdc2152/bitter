@@ -16,7 +16,6 @@ import {
 } from "../actions/postsActions";
 
 const postIds = (state=[], action) => {
-  console.log(action);
   Object.freeze(state);
   switch(action.type) {
     case RECEIVE_POST:

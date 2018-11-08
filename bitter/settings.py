@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
+    "storages",
     "rest_framework",
     "api.apps.ApiConfig",
     "image.apps.ImageConfig",
@@ -124,19 +125,26 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "frontend", "build", "static"),
 ]
 
-# Whitenoise
-WHITENOISE_ROOT = os.path.join(BASE_DIR, "static")
+# AWS
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = "bitter-assets"
+AWS_S3_CUSTOM_DOMAIN = "{}.s3.amazonaws.com".format(AWS_STORAGE_BUCKET_NAME)
+
+AWS_S3_OBJECT_PARAMETERS = {
+    "CacheControl": "max-age=86400",
+}
+
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+DEFAULT_FILE_STORAGE = "bitter.storage_backends.MediaStorage"
+
 
 # REST Framework
 REST_FRAMEWORK = {
@@ -147,9 +155,5 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.AllowAny",
     )
 }
-
-# Media
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 django_heroku.settings(locals())

@@ -6,6 +6,7 @@ import {
   getCurrentUser,
   getProfileFormFields,
   isLoggedIn,
+  getIsUpdatingProfile,
 } from "../../reducers/selectors";
 
 import {
@@ -13,6 +14,8 @@ import {
   changeProfileField,
   updateUser,
 } from "../../actions/profileFormActions";
+
+import Loading from "../loading";
 
 class UserUpdateProfile extends React.Component {
   constructor(props) {
@@ -46,7 +49,7 @@ class UserUpdateProfile extends React.Component {
   }
 
   render() {
-    const {profileFormFields, isLoggedIn} = this.props;
+    const {profileFormFields, isLoggedIn, isUpdating} = this.props;
     const {
       username,
       first_name,
@@ -59,6 +62,7 @@ class UserUpdateProfile extends React.Component {
     return isLoggedIn ?
       (
       <div className="position-fixed w-100">
+        {isUpdating && <Loading />}
         <div className="bg-white h-100">
 
           <div className="p-5 center-update m-auto">
@@ -101,7 +105,7 @@ class UserUpdateProfile extends React.Component {
               </div>
 
               <div className="form-group row">
-                  <label className="col-sm-3" htmlForm="slugInput">@</label>
+                  <label className="col-sm-3" htmlFor="slugInput">@</label>
                   <input className="form-control col-sm-9" type="text"
                     placeholder="slug" name="slug"
                     value={slug} id="slugInput"
@@ -175,6 +179,7 @@ const mapStateToProps = state => (
     currentUser: getCurrentUser(state),
     profileFormFields: getProfileFormFields(state),
     isLoggedIn: isLoggedIn(state),
+    isUpdating: getIsUpdatingProfile(state),
   }
 );
 

@@ -34,6 +34,15 @@ export const clearProfileFormErrors = () => (
   }
 );
 
+// Updating
+export const IS_UPDATING_PROFILE = "IS_UPDATING_PROFILE";
+
+export const isUpdatingProfile = () => (
+  {
+    type: IS_UPDATING_PROFILE,
+  }
+);
+
 // Flatten and nest data for field representation and sending
 export const getProfileDataFromUser = ({profile}) => (
   (({slug, description}) => (
@@ -67,7 +76,7 @@ const formDataFromFields = fields => {
 
 export const updateUser = (fields, id) => {
   return dispatch => {
-    // TODO: find out how to send files nested
+    dispatch(isUpdatingProfile());
     return fetch(`/api/users/${id}/`, {
       method: "PATCH",
       credentials: "same-origin",
