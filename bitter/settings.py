@@ -26,12 +26,12 @@ SECRET_KEY = '%*p##%hw3^pf7w2^axk+k+g-uo!snkcf)ttxbn9!xl@lk_$s-p'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "bitter-app.herokuapp.com"
+    "127.0.0.1",
+    "bitter-app.herokuapp.com",
 ]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,9 +62,7 @@ ROOT_URLCONF = 'bitter.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, "../frontend/build")
-        ],
+        'DIRS': [os.path.join(BASE_DIR, "frontend", "build")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,9 +128,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# STATICFILES_DIRS = [
-    # os.path.join(BASE_DIR, "frontend", 'build', 'static'),
-# ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "frontend", 'build'),
+]
 
 # Whitenoise
 WHITENOISE_ROOT = os.path.join(BASE_DIR, "staticfiles")
